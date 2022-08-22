@@ -13,4 +13,10 @@ class Solution {
 
 }
 
+
+
+class second {
+	
+}
+
 ```
