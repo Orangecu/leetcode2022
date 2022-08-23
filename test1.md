@@ -66,7 +66,7 @@ english
 ---
 ---
 
-[谷歌](www.baidu.com)
+[谷歌](www.google.com)
 
 [百度][id],百度][id],
 [id]：google.com
