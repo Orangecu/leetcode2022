@@ -2,6 +2,7 @@ leetcode
 215
 Kth Largest Element in an Array
 ```java
+
 class Solution {
     public int findKthLargest(int[] nums, int k) {
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();
@@ -21,7 +22,8 @@ class Solution {
 ```
 简单解法
 
-java```
+```java
+
 class Solution {
     public int findKthLargest(int[] nums, int k) {
         Arrays.sort(nums);
