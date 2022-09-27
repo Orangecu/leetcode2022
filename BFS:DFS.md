@@ -229,3 +229,111 @@ public class Solution {
     }
 }
 ```
+
+15 · Permutations
+```java
+public class Solution {
+    /*
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> results = new ArrayList<>();
+        if (nums == null) {
+            return results;
+        }
+        
+        dfs(nums, new boolean[nums.length], new ArrayList<Integer>(), results);
+        
+        return results;
+    }
+    
+    private void dfs(int[] nums,
+                     boolean[] visited,
+                     List<Integer> permutation,
+                     List<List<Integer>> results) {
+        if (nums.length == permutation.size()) {
+            results.add(new ArrayList<Integer>(permutation));
+            return;
+        }
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (visited[i]) {
+                continue;
+            }
+            
+            permutation.add(nums[i]);
+            visited[i] = true;
+            dfs(nums, visited, permutation, results);
+            visited[i] = false;
+            permutation.remove(permutation.size() - 1);
+        }
+    }
+}
+```
+
+
+17 · Subsets
+```java
+public class Solution {
+    /*
+     * @param nums: A set of numbers
+     * @return: A list of lists
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        if (nums == null) {
+            return new ArrayList<>();
+        }
+        
+        List<List<Integer>> queue = new ArrayList<>();
+        int index = 0;
+        
+        queue.add(new LinkedList<Integer>());
+        while (index < queue.size()) {
+            List<Integer> subset = queue.get(index++);
+            for (int i = 0; i < nums.length; i++) {
+                if (subset.size() != 0 && subset.get(subset.size() - 1) >= nums[i]) {
+                    continue;
+                }
+                List<Integer> newSubset = new ArrayList<>(subset);
+                newSubset.add(nums[i]);
+                queue.add(newSubset);
+            }
+        }
+        
+        return queue;
+    }
+}
+```
+
+
+
+69 · Binary Tree Level Order Traversal
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> ret = new ArrayList<List<Integer>>();
+        if (root == null) {
+            return ret;
+        }
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            List<Integer> level = new ArrayList<Integer>();
+            int currentLevelSize = queue.size();
+            for (int i = 1; i <= currentLevelSize; ++i) {
+                TreeNode node = queue.poll();
+                level.add(node.val);
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            ret.add(level);
+        }
+        return ret;
+    }
+}
+```
