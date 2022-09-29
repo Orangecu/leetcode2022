@@ -492,3 +492,136 @@ public class Solution {
     }
 }
 ```
+
+Quick sort
+148 · Sort Colors
+```java
+public class Solution {
+    /**
+     * @param nums: A list of integer which is 0, 1 or 2 
+     * @return: nothing
+     */
+    public void sortColors(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        int mid = 0;
+
+        while (mid <= right){
+            if (nums[mid] == 0){
+                swap(nums, mid, left);
+                mid ++;
+                left ++;
+            }
+            else if (nums[mid] == 2){
+                swap(nums, mid, right);
+                right --;
+            }
+            else{
+                mid ++;
+            }
+        }
+    }
+
+    private void swap(int[] a, int i, int j) {
+        int tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+}
+```
+143 · Sort Colors II
+
+```java
+public class Solution {
+    /**
+     * @param colors: A list of integer
+     * @param k: An integer
+     * @return: nothing
+     */
+    public void sortColors2(int[] colors, int k) {
+        // write your code here
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        
+        for (int i = 0; i < colors.length; i++) {
+            // colors[0] = 3
+            int currentCount = map.getOrDefault(colors[i], 0);
+            map.put(colors[i], currentCount + 1);
+        }
+        System.out.println(map);
+
+        // (3:1), (2:4), (1:2)
+
+        // [1, 1, 1, 1, 1, 1 ] 
+        int index = 0; 
+        for (int i = 1; i <= k; i++) {
+            int count = map.getOrDefault(i, 0);
+            for (int j = 0; j < count; j++) {
+                colors[index] = i; 
+                index++;
+            }
+        }
+        // System.out.println(Arrays.toString(result));
+
+        // for (int i = 0; i < colors.length; i++) {
+        //     colors[i] = result[i];
+        // }
+    }
+}
+
+```
+
+80 · Median
+```java
+// O(n)
+public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return: An integer denotes the middle number of the array
+     */
+    public int median(int[] nums) {
+        if (nums == null) {
+            return -1;
+        }
+
+        return quickSelect(nums, 0, nums.length - 1, (nums.length + 1) / 2);  
+    }
+
+    private int quickSelect(int[] nums, int left, int right, int k) {
+        int start = left, end = right;
+        int pivot = nums[(left + right) / 2];
+
+        while (start <= end) {
+            while (start <= end && nums[start] < pivot) {
+                start++;
+            }
+
+            while (start <= end && nums[end] > pivot) {
+                end--;
+            }
+
+            if (start <= end) {
+                swap(nums, start, end);
+
+                start++;
+                end--;
+            }
+        }
+
+        if (left + k - 1 <= end) {
+            return quickSelect(nums, left, end, k);
+        }
+        
+        if (left + k - 1 >= start) {
+            return quickSelect(nums, start, right, k - (start - left));
+        }
+
+        return nums[end + 1];
+    }
+    
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+```

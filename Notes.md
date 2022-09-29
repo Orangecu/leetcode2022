@@ -1,4 +1,4 @@
-
+ 
 
 ## What happens when we hit www.amazon.com (IP) in browser
 1. when we type www.amazon.com in browser, browswe will auto-complete based on history.\
@@ -41,3 +41,5 @@
 2. client request GET to Controller
 3. Ccontroller will access/modify Model(data value object/data access object)(dvo dao)
 4. 
+
+##  Mongo DB
