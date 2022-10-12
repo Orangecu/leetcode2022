@@ -339,5 +339,221 @@ public class Solution {
     }
 }
 
+```
+511 · Swap Two Nodes in Linked List
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
 
+public class Solution {
+    /**
+     * @param head: a ListNode
+     * @param v1: An integer
+     * @param v2: An integer
+     * @return: a new head of singly-linked list
+     */
+    public ListNode swapNodes(ListNode head, int v1, int v2) {
+        // write your code here
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev1;
+        ListNode prev2;
+        prev1 = dummy;
+        prev2 = dummy;
+
+        while (prev1.next != null && prev1.next.val != v1) {
+            prev1 = prev1.next;
+        }
+        while (prev2.next != null && prev2.next.val != v2) {
+            prev2 = prev2.next;
+        }
+        if (prev1.next == null || prev2.next == null) return head;
+        ListNode node1 = prev1.next;
+        ListNode node2 = prev2.next;
+        prev1.next = prev2.next;
+        prev2.next = node1;
+        ListNode temp = node1.next;
+        node1.next = node2.next;
+        node2.next = temp;
+        return dummy.next;
+    }
+}
+
+```
+
+36 · Reverse Linked List II
+
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: ListNode head is the head of the linked list 
+     * @param m: An integer
+     * @param n: An integer
+     * @return: The head of the reversed ListNode
+     */
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        // write your code here
+        if (m >= n || head == null) {
+            return head;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        head = dummy;
+
+        for (int i = 1; i < m; i++) {
+            head = head.next;
+        }
+        ListNode nmprev= head;
+        ListNode nm = nmprev.next;
+        ListNode nn = nm;
+        for (int i = 0; i < n - m; i++) {
+            nn = nn.next;
+        }
+        ListNode nnplus = nn.next;
+        reverse(head, head.next, n - m + 1);
+        nm.next = nnplus;
+        nmprev.next = nn;
+        return dummy.next;
+    }
+    private void reverse(ListNode prev, ListNode currentt, int k) {
+        for (int i = 0; i < k; i++) {
+            ListNode current = currentt.next;
+            currentt.next = prev;
+            prev = currentt;
+            currentt = current;            
+        }
+    }
+}
+```
+380 · Intersection of Two Linked Lists
+```java
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        
+        ListNode node = headA;
+
+        while (node.next != null) {
+            node = node.next;
+        }
+        
+        node.next = headB;
+        ListNode result = findCycleNode(headA);
+        node.next = null;
+        return result;
+    }
+    
+    private ListNode findCycleNode(ListNode head) {
+        ListNode fast, slow;
+        fast = head;
+        slow = head;
+        
+        do {
+            if (fast == null || fast.next == null) {
+                return null;
+            }
+            fast = fast.next.next;
+            slow = slow.next;
+        } while (fast != slow);
+        
+        ListNode result = head;
+        while (result != fast) {
+            result = result.next;
+            fast = fast.next;
+        }
+        
+        return result;
+    }
+}
+```
+102 · Linked List Cycle
+
+```java
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return false;
+        }
+        ListNode fast;
+        ListNode slow;
+        fast = head;
+        slow = head;
+        do {
+            if (fast == null || fast.next == null) {
+                return false;
+            }
+            fast = fast.next.next;
+            slow = slow.next;
+        } while (fast != slow);
+        
+        return true;
+    }
+}
+```
+170 · Rotate List
+
+```java
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+        
+        int length = getLength(head);
+        k = k % length;
+        
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        head = dummy;
+        
+        ListNode tail = dummy;
+        for (int i = 0; i < k; i++) {
+            head = head.next;
+        }
+        
+        while (head.next != null) {
+            head = head.next;
+            tail = tail.next;
+        }
+        
+        head.next = dummy.next;
+        dummy.next = tail.next;
+        tail.next = null;
+        
+        return dummy.next;
+    }
+    
+    private int getLength(ListNode head) {
+        int length = 0;
+        while (head != null) {
+            length++;
+            head = head.next;
+        }
+        return length;
+    }
+}
 ```

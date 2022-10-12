@@ -319,3 +319,449 @@ public class Solution {
     }   //若不符合上一条 则 return true
 }
 ```
+
+LintCode
+97 · Maximum Depth of Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    private int depth;
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer
+     */
+    public int maxDepth(TreeNode root) {
+        // write your code here
+        depth = 0;
+        helper(root , 1);
+        return depth;
+    }
+    private void helper(TreeNode root, int currentDepth) {
+        if (root == null) {
+            return;
+        }
+        depth = Math.max( depth, currentDepth);
+        helper(root.left, currentDepth + 1);
+        helper(root.right, currentDepth + 1);
+    }
+}
+```
+480 · Binary Tree Paths
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root of the binary tree
+     * @return: all root-to-leaf paths
+     *          we will sort your return value in output
+     */
+    public List<String> binaryTreePaths(TreeNode root) {
+        // write your code here
+        List<String> result = new ArrayList<>();
+        helper(root, "", result);
+        return result;
+    }
+    private void helper(TreeNode root, String save, List<String> result) {
+        if (root == null) {
+            return;
+        } else {
+            save = save + Integer.toString(root.val);
+        }
+        if (root.left == null && root.right == null) {
+            result.add(save);
+        } else {
+            save = save + "->" ;
+            helper(root.left, save, result);
+            helper(root.right, save, result);
+        }
+    }
+}
+```
+66 · Binary Tree Preorder Traversal
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Preorder in ArrayList which contains node values.
+     */
+    public List<Integer> preorderTraversal(TreeNode root) {
+        // write your code here
+        List<Integer> result = new ArrayList<>();
+        searchTree(root, result);
+        return result;
+    }
+    private void searchTree(TreeNode root, List result) {
+        if (root == null) {
+            return;
+        }
+        result.add(root.val);
+        searchTree(root.left, result);
+        searchTree(root.right, result);
+    }
+}
+```
+
+67 · Binary Tree Inorder Traversal
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Inorder in ArrayList which contains node values.
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        // write your code here
+        List<Integer> result = new ArrayList<>();
+        searchTree(root, result);
+        return result;
+    }
+    private void searchTree(TreeNode root, List result) {
+        if (root == null) {
+            return;
+        }
+        searchTree(root.left, result);
+        result.add(root.val);
+        searchTree(root.right, result);
+    }
+}
+```
+68 · Binary Tree Postorder Traversal
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Inorder in ArrayList which contains node values.
+     */
+    public List<Integer> postorderTraversal(TreeNode root) {
+        // write your code here
+        List<Integer> result = new ArrayList<>();
+        searchTree(root, result);
+        return result;
+    }
+    private void searchTree(TreeNode root, List result) {
+        if (root == null) {
+            return;
+        }
+        searchTree(root.left, result);
+        searchTree(root.right, result);
+        result.add(root.val);
+    }
+}
+```
+
+97 · Maximum Depth of Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    private int depth;
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer
+     */
+    public int maxDepth(TreeNode root) {
+        // write your code here
+        depth = 0;
+        helper(root , 1);
+        return depth;
+    }
+    private void helper(TreeNode root, int currentDepth) {
+        if (root == null) {
+            return;
+        }
+        depth = Math.max( depth, currentDepth);
+        helper(root.left, currentDepth + 1);
+        helper(root.right, currentDepth + 1);
+    }
+}
+```
+fangfa 2
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer
+     */
+    public int maxDepth(TreeNode root) {
+        // write your code here
+        if (root == null) {
+            return 0;
+        }
+        int leftDepth = maxDepth(root.left);
+        int rightDepth = maxDepth(root.right);
+        return Math.max(leftDepth, rightDepth)+1;
+    }
+}
+```
+
+480 · Binary Tree Paths
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root of the binary tree
+     * @return: all root-to-leaf paths
+     *          we will sort your return value in output
+     */
+    public List<String> binaryTreePaths(TreeNode root) {
+        // write your code here
+        List<String> result = new ArrayList<>();
+        helper(root, "", result);
+        return result;
+    }
+    private void helper(TreeNode root, String save, List<String> result) {
+        if (root == null) {
+            return;
+        } else {
+            save = save + Integer.toString(root.val);
+        }
+        if (root.left == null && root.right == null) {
+            result.add(save);
+        } else {
+            save = save + "->" ;
+            helper(root.left, save, result);
+            helper(root.right, save, result);
+        }
+    }
+}
+
+```
+595 · Binary Tree Longest Consecutive Sequence
+```java
+// O(n)
+class Solution {
+    private int longest = 0;
+    public int longestConsecutive(TreeNode root) {
+        helper(root, null, 0);
+        return longest;
+    }
+    
+    private void helper(TreeNode root, TreeNode parent, int subtreeLongest) {
+        if (root == null) {
+            return;
+        }
+        if (parent != null && root.val == parent.val + 1) {
+            subtreeLongest++;
+        } else {
+            subtreeLongest = 1;
+        }
+        
+        longest = Math.max(longest, subtreeLongest);
+        helper(root.left, root, subtreeLongest);
+        helper(root.right, root, subtreeLongest);
+    }
+}
+```
+
+
+```java
+class Solution {
+    private int longest;
+    public int longestConsecutive(TreeNode root) {
+        longest = 0;
+        helper(root);
+        return longest;
+    }
+    private int helper(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        
+        int left = helper(root.left);
+        int right = helper(root.right);
+        
+        int subtreeLongest = 1;
+        if (root.left != null && root.val + 1 == root.left.val) {
+            subtreeLongest = Math.max(subtreeLongest, left + 1);
+        }
+        if (root.right != null && root.val + 1 == root.right.val) {
+            subtreeLongest = Math.max(subtreeLongest, right + 1);
+        }
+        
+        if (subtreeLongest > longest) {
+            longest = subtreeLongest;
+        }
+        return subtreeLongest;
+    }
+}
+```
+93 · Balanced Binary Tree
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+ 
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return height(root) >= 0;
+    }
+    public int height(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftHeight = height(root.left);
+        int rightHeight = height(root.right);
+        if (leftHeight == -1 || rightHeight == -1 || Math.abs(leftHeight - rightHeight) > 1) {
+            return -1;
+        } else {
+            return Math.max(leftHeight, rightHeight) + 1;
+        }
+    }
+}
+```
+
+1311 · Lowest Common Ancestor of a Binary Search Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: root of the tree
+     * @param p: the node p
+     * @param q: the node q
+     * @return: find the LCA of p and q
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // write your code here
+        int pVal = p.val;
+        int qVal = q.val;
+        
+        TreeNode node = root;
+        while (node != null) {
+            int parentVal = node.val;
+            if (pVal > parentVal && qVal > parentVal) {
+                node = node.right;
+            } else if (pVal < parentVal && qVal < parentVal) {
+                node = node.left;
+            } else {
+                return node;
+            }
+        }
+        return null;
+    }
+}
+```
+
+
+
+```java
+
+```
+
+
+
+```java
+
+```
