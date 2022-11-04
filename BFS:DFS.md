@@ -337,3 +337,330 @@ class Solution {
     }
 }
 ```
+611 · Knight Shortest Path
+
+```java
+public class Solution {
+    int n, m; // size of the chessboard
+    int[] deltaX = {1, 1, 2, 2, -1, -1, -2, -2};
+    int[] deltaY = {2, -2, 1, -1, 2, -2, 1, -1};
+    /**
+     * @param grid a chessboard included 0 (false) and 1 (true)
+     * @param source, destination a point
+     * @return the shortest path 
+     */
+    public int shortestPath(boolean[][] grid, Point source, Point destination) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return -1;
+        }
+        n = grid.length;
+        m = grid[0].length;
+
+        Queue<Point> queue = new LinkedList<>();
+        queue.offer(source);
+        
+        int steps = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                Point point = queue.poll();
+                if (point.x == destination.x && point.y == destination.y) {
+                    return steps;
+                }
+                
+                for (int direction = 0; direction < 8; direction++) {
+                    Point nextPoint = new Point(
+                        point.x + deltaX[direction],
+                        point.y + deltaY[direction]
+                    );
+                    
+                    if (!inBound(nextPoint, grid)) {
+                        continue;
+                    }
+                    
+                    queue.offer(nextPoint);
+                    // mark the point not accessible
+                    grid[nextPoint.x][nextPoint.y] = true;
+                }
+            }
+            steps++;
+        }
+        
+        return -1;
+    }
+    
+    private boolean inBound(Point point, boolean[][] grid) {
+        if (point.x < 0 || point.x >= n) {
+            return false;
+        }
+        if (point.y < 0 || point.y >= m) {
+            return false;
+        }
+        return (grid[point.x][point.y] == false);
+    }
+}
+
+```
+69 · Binary Tree Level Order Traversal
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Level order a list of lists of integer
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        
+        if (root == null) {
+            return null;
+        }
+
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            List<Integer> level = new ArrayList<>();
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                level.add(node.val);
+
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+
+            result.add(level);
+        }
+
+        return result;
+    }
+}
+
+```
+
+70 · Binary Tree Level Order Traversal II
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A tree
+     * @return: buttom-up level order a list of lists of integer
+     */
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        // write your code here
+        List<List<Integer>> result = new ArrayList<>();
+        LinkedList<TreeNode> queue = new LinkedList<>();
+
+        if (root != null) {
+            queue.offer(root);
+        }
+        while (!queue.isEmpty()) {
+            int length = queue.size();
+            List<Integer> tempList = new ArrayList<>();
+
+            while (length > 0) {
+                TreeNode treeNode = queue.poll();
+                tempList.add(treeNode.val);
+                if (treeNode.left != null) {
+                    queue.offer(treeNode.left);
+                }
+                if (treeNode.right != null) {
+                    queue.offer(treeNode.right);
+                }
+                length--;
+            }
+            result.add(tempList);
+        }
+        Collections.reverse(result);
+        return result;
+    }
+}
+
+```
+ Binary Tree Zigzag Level Order Traversal
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: A list of lists of integer include the zigzag level order traversal of its nodes' values.
+     */
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        // write your code here
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return null;
+        }
+        Deque<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offerLast(root);
+
+        Boolean isFromRight = false;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> list = new ArrayList<Integer>();
+            
+            for (int i = 0; i < size; i++) {
+                if (isFromRight == false) {
+                    TreeNode node = queue.pollFirst();
+                    list.add(node.val);
+                    if (node.left != null) {
+                        queue.offerLast(node.left);
+                    }
+                    if (node.left != null) {
+                        queue.offerFirst(node.left);
+                    }
+                }
+            }
+            isFromRight = flipTraversalDirection(isFromRight); 
+            result.add(list);
+        }
+        return result;
+    }
+    private boolean flipTraversalDirection(boolean flag) {
+        return !flag;
+    }
+}
+
+```
+178 · Graph Valid Tree
+
+```java
+
+public class Solution {
+    /**
+     * @param n an integer
+     * @param edges a list of undirected edges
+     * @return true if it's a valid tree, or false
+     */
+    public boolean validTree(int n, int[][] edges) {
+        if (n == 0) {
+            return false;
+        }
+        if (edges.length != n - 1) {
+            return false;
+        }
+        Map<Integer, Set<Integer>> graph = initializeGraph(n, edges);
+
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> hash = new HashSet<>();
+        
+        queue.offer(0);
+        hash.add(0);
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            for (Integer neighbor : graph.get(node)) {
+                if (hash.contains(neighbor)) {
+                    continue;
+                }
+                hash.add(neighbor);
+                queue.offer(neighbor);
+            }
+        }
+        
+        return (hash.size() == n);
+    }
+    
+    private Map<Integer, Set<Integer>> initializeGraph(int n, int[][] edges) {
+        Map<Integer, Set<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new HashSet<Integer>());
+        }
+        
+        for (int i = 0; i < edges.length; i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+        }
+        
+        return graph;
+    }
+}
+
+```
+595 · Binary Tree Longest Consecutive Sequence
+
+```java
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root of binary tree
+     * @return: the length of the longest consecutive sequence path
+     */
+    private int longest = 0;
+    public int longestConsecutive(TreeNode root) {
+        // write your code here
+        helper(root, null, 0);
+        return longest;
+    }
+    private void helper(TreeNode root, TreeNode parent, int longestSubTree) {
+        if (root == null) {
+            return;
+        }
+        if (parent != null && root.val != parent.val + 1){
+            longestSubTree++;
+        } else {
+            longestSubTree = 1;
+        }
+
+        longest = Math.max(longest, longestSubTree);
+        helper(root.left, root, longestSubTree);
+        helper(root.right, root, longestSubTree);
+    }
+}
+
+```

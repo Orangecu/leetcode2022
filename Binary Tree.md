@@ -754,14 +754,250 @@ public class Solution {
 }
 ```
 
-
+595 · Binary Tree Longest Consecutive Sequence
 
 ```java
+class Solution {
+    private int longest;
+    public int longestConsecutive(TreeNode root) {
+        longest = 0;
+        helper(root);
+        return longest;
+    }
+    private int helper(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        
+        int left = helper(root.left);
+        int right = helper(root.right);
+        
+        int subtreeLongest = 1;
+        if (root.left != null && root.val + 1 == root.left.val) {
+            subtreeLongest = Math.max(subtreeLongest, left + 1);
+        }
+        if (root.right != null && root.val + 1 == root.right.val) {
+            subtreeLongest = Math.max(subtreeLongest, right + 1);
+        }
+        
+        if (subtreeLongest > longest) {
+            longest = subtreeLongest;
+        }
+        return subtreeLongest;
+    }
+}
+```
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root of binary tree
+     * @return: the length of the longest consecutive sequence path
+     */
+    private int longest = 0;
+    public int longestConsecutive(TreeNode root) {
+        helper(root, null, 0);
+        return longest;
+    }
+    
+    private void helper(TreeNode root, TreeNode parent, int subtreeLongest) {
+        if (root == null) {
+            return;
+        }
+        if (parent != null && root.val == parent.val + 1) {
+            subtreeLongest++;
+        } else {
+            subtreeLongest = 1;
+        }
+        
+        longest = Math.max(longest, subtreeLongest);
+        helper(root.left, root, subtreeLongest);
+        helper(root.right, root, subtreeLongest);
+    }
+}
+```
+614 · Binary Tree Longest Consecutive Sequence II
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root of binary tree
+     * @return: the length of the longest consecutive sequence path
+     */
+    public int longestConsecutive2(TreeNode root) {
+        // write your code here
+        return helper(root)[2];
+    }
+    private int[] helper(TreeNode root) {
+        if (root == null) {
+            return new int[] {0, 0, 0}; // {increasing, decreasing, maxLength}
+        }
+        
+        int[] left = helper(root.left);
+        int[] right = helper(root.right);
+        
+        int inc = 0, dec = 0;
+        if (root.left != null && root.left.val + 1 == root.val) {
+            dec = Math.max(dec, left[1] + 1);
+        }
+        if (root.left != null && root.left.val - 1 == root.val) {
+            inc = Math.max(inc, left[0] + 1);
+        }
+        if (root.right != null && root.right.val + 1 == root.val) {
+            dec = Math.max(dec, right[1] + 1);
+        }
+        if (root.right != null && root.right.val - 1 == root.val) {
+            inc = Math.max(inc, right[0] + 1);
+        }
+        
+        int subLength = inc + dec + 1;
+        subLength = Math.max(subLength, Math.max(left[2], right[2]));
+        
+        return new int[] {inc, dec, subLength};
+    }
+}
 
 ```
 
-
-
+1534 · Convert Binary Search Tree to Sorted Doubly Linked List
 ```java
+class Solution {
 
+  TreeNode first = null;
+  TreeNode last = null;
+
+  public void helper(TreeNode node) {
+    if (node != null) {
+      helper(node.left);
+      if (last != null) {
+        last.right = node;
+        node.left = last;
+      }
+      else {
+        first = node;
+      }
+      last = node;
+      helper(node.right);
+    }
+  }
+
+  public TreeNode treeToDoublyList(TreeNode root) {
+    if (root == null) return null;
+
+    helper(root);
+    last.right = first;
+    first.left = last;
+    return first;
+  }
+}
 ```
+
+177 · Convert Sorted Array to Binary Search Tree With Minimal Height.
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param a: an integer array
+     * @return: A tree node
+     */
+    public TreeNode sortedArrayToBST(int[] a) {
+        // write your code here
+        if (a == null) {
+            return null;
+        }
+        return buildTree(a, 0, a.length - 1);
+    }
+    
+    private TreeNode buildTree(int[] a, int start, int end) {
+        if (start > end) {
+            return null;
+        }
+        
+        TreeNode node = new TreeNode(a[(start + end) / 2]);
+        node.left = buildTree(a, start, (start + end) / 2 - 1);
+        node.right = buildTree(a, (start + end) / 2 + 1, end);
+        return node;
+    }
+}
+```
+
+1704 · Range Sum of BST
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root node
+     * @param l: an integer
+     * @param r: an integer
+     * @return: the sum
+     */
+     int result = 0;
+    public int rangeSumBST(TreeNode root, int l, int r) {
+        // write your code here.
+        helper(root, l, r);
+        return result;
+    }
+    
+    private void helper(TreeNode root, int low, int high) {
+        if (root == null) {
+            return;
+        }
+        
+        if (root.val > low) {
+            helper(root.left, low, high);
+        }
+        if (root.val >= low && root.val <= high) {
+            result += root.val;
+        }
+        if (root.val < high) {
+            helper(root.right, low, high);
+        }
+    }
+}
+```
+

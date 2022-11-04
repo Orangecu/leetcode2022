@@ -46,6 +46,12 @@ public class Solution {
 }
 ```
 
+int m = SetA.length
+int n = SetB.length
+
+
+
+
 Merge Two Sorted Arrays
 ```java
 public class Solution {
