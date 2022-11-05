@@ -187,3 +187,184 @@ class Solution {
 }`
 
 ```
+
+175 · Invert Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: a TreeNode, the root of the binary tree
+     * @return: nothing
+     */
+    public void invertBinaryTree(TreeNode root) {
+        // write your code here
+        if (root == null) {
+            return;
+        }
+        TreeNode temp = root.left;
+        root.left = root.right; 
+        root.right = temp;
+
+        invertBinaryTree(root.left);
+        invertBinaryTree(root.right);
+
+    }
+}
+
+```
+95 · Validate Binary Search Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: True if the binary tree is BST, or false
+     */
+    public boolean isValidBST(TreeNode root) {
+        // write your code here
+        return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+    public boolean isValidBST(TreeNode node, long min, long max){
+        if (node == null) {
+            return true;
+        }
+        if (node.val <= min || node.val >= max) {
+            return false;
+        } 
+        return isValidBST(node.left, min, node.val) && isValidBST(node.right, node.val, max);
+    }
+}
+```
+66 · Binary Tree Preorder Traversal
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Preorder in ArrayList which contains node values.
+     */
+    public List<Integer> preorderTraversal(TreeNode root) {
+        // write your code here
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        List left = preorderTraversal(root.left);
+        List right = preorderTraversal(root.right);
+
+        result.add(root.val);
+        result.addAll(left);
+        result.addAll(right);
+
+        return result;
+    }
+}
+
+```
+67 · Binary Tree Inorder Traversal
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Inorder in ArrayList which contains node values.
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        // write your code here
+
+        List<Integer> result = new Arraylist<>();
+        if (root == null) {
+            return result;
+        }
+        List left = inorderTraversal(root.left);
+        List right = inorderTraversal(root.right);
+
+        result.addAll(left);
+        result.add(root.val);
+        result.addAll(right);
+    }
+}
+```
+68 · Binary Tree Postorder Traversal
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Inorder in ArrayList which contains node values.
+     */
+    public List<Integer> postorderTraversal(TreeNode root) {
+        // write your code here
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        List left = postorderTraversal(root.left);
+        List right = postorderTraversal(root.right);
+
+        result.addAll(left);
+        result.addAll(right);
+        result.add(root.val);
+       
+       return result;
+    }
+}
+
+```
+
+本来还有两题，但是没刷熟，加到明天的刷
