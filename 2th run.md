@@ -366,5 +366,120 @@ public class Solution {
 }
 
 ```
+ Binary Tree Preorder Traversal
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
 
-本来还有两题，但是没刷熟，加到明天的刷
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Preorder in ArrayList which contains node values.
+     */
+    public List<Integer> preorderTraversal(TreeNode root) {
+        // write your code here
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        List<Integer> result = new ArrayList<Integer>();
+        if (root == null) {
+            return result;
+        }
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            result.add(node.val);
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+        } 
+        return result;
+    }
+}
+
+```
+Binary Tree Inorder Traversal
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Inorder in ArrayList which contains node values.
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        // write your code here
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        List<Integer> result = new ArrayList<Integer>();
+
+        TreeNode node = root;
+        while (node != null || !stack.empty()) {
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            result.add(node.val);
+            node = node.right;
+        }
+        return result;
+    }
+}
+```
+Binary Tree Postorder Traversal
+
+```java
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        List<Integer> result = new ArrayList<>();
+
+        TreeNode prev = null;
+        TreeNode curr = root;
+        
+        if (root == null) {
+            return result;
+        }
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            curr = stack.peek();
+            if (prev == null || prev.left == curr || prev.right == curr) {
+                if (curr.left != null) {
+                    stack.push(curr.left);
+                } else if (curr.right != null) {
+                    stack.push(curr.right);
+                }
+            } else if (curr.left == prev) {
+                if (curr.right != null) {
+                    stack.push(curr.right);
+                }
+            } else {
+                result.add(curr.val);
+                stack.pop();
+            }
+            prev = curr;
+        }
+        return result;
+    }
+}
+```
