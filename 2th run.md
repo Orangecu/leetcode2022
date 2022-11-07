@@ -483,3 +483,129 @@ class Solution {
     }
 }
 ```
+93 · Balanced Binary Tree
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: True if this Binary tree is Balanced, or false.
+     */
+    public boolean isBalanced(TreeNode root) {
+        // write your code here
+        return height(root) >= 0;
+    }
+    private int height(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int heightLeft = height(root.left);
+        int heightRight = height(root.right);
+
+        if (heightLeft == -1 || heightRight == -1 || Math.abs(heightLeft - heightRight) > 1) {
+            return -1;
+        } else {
+            return Math.max(heightLeft, heightRight) + 1;
+        }
+    }
+}
+
+```
+177 · Convert Sorted Array to Binary Search Tree With Minimal Height.
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param a: an integer array
+     * @return: A tree node
+     */
+    public TreeNode sortedArrayToBST(int[] a) {
+        // write your code here
+        if (a == null) {
+            return null;
+        }
+        return buildTree(a, 0, a.length - 1);
+    }
+    
+    private TreeNode buildTree(int[] a, int start, int end) {
+        if (start > end) {
+            return null;
+        }
+        
+        TreeNode node = new TreeNode(a[(start + end) / 2]);
+        node.left = buildTree(a, start, (start + end) / 2 - 1);
+        node.right = buildTree(a, (start + end) / 2 + 1, end);
+        return node;
+    }
+}
+
+```
+
+1704 · Range Sum of BST
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root node
+     * @param l: an integer
+     * @param r: an integer
+     * @return: the sum
+     */
+     int result = 0;
+    public int rangeSumBST(TreeNode root, int l, int r) {
+        // write your code here.
+        helper(root, l, r);
+        return result;
+    }
+    private void helper(TreeNode root, int min, int max) {
+        if (root == null) {
+            return;
+        }
+        if (root.val > min) {
+            helper(root.left, min, max);
+        }
+        if (root.val >= min && root.val <= max) {
+            result += root.val;
+        }
+        if (root.val < max) {
+            helper(root.right, min, max);
+        }
+    }
+}
+
+```
