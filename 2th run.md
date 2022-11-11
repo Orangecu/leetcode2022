@@ -505,14 +505,14 @@ public class Solution {
      */
     public boolean isBalanced(TreeNode root) {
         // write your code here
-        return height(root) >= 0;
+        return getMaxDpeth(root) >= 0;
     }
-    private int height(TreeNode root) {
+    private int getMaxDpeth(TreeNode root) {
         if (root == null) {
             return 0;
         }
-        int heightLeft = height(root.left);
-        int heightRight = height(root.right);
+        int heightLeft = getMaxDpeth(root.left);
+        int heightRight = getMaxDpeth(root.right);
 
         if (heightLeft == -1 || heightRight == -1 || Math.abs(heightLeft - heightRight) > 1) {
             return -1;
@@ -605,6 +605,336 @@ public class Solution {
         if (root.val < max) {
             helper(root.right, min, max);
         }
+    }
+}
+
+```
+
+1534 · Convert Binary Search Tree to Sorted Doubly Linked List
+```java
+
+
+
+class Solution {
+
+  TreeNode first = null;
+  TreeNode last = null;
+
+  public void helper(TreeNode node) {
+    if (node != null) {
+      helper(node.left);
+      if (last != null) {
+        last.right = node;
+        node.left = last;
+      }
+      else {
+        first = node;
+      }
+      last = node;
+      helper(node.right);
+    }
+  }
+
+  public TreeNode treeToDoublyList(TreeNode root) {
+    if (root == null) return null;
+
+    helper(root);
+    last.right = first;
+    first.left = last;
+    return first;
+  }
+}
+
+```
+
+1311 · Lowest Common Ancestor of a Binary Search Tree
+
+```java
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: root of the tree
+     * @param p: the node p
+     * @param q: the node q
+     * @return: find the LCA of p and q
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // write your code here
+        int pVal = p.val;
+        int qVal = q.val;
+        
+        TreeNode node = root;
+        while (node != null) {
+            int parentVal = node.val;
+            if (pVal > parentVal && qVal > parentVal) {
+                node = node.right;
+            } else if (pVal < parentVal && qVal < parentVal) {
+                node = node.left;
+            } else {
+                return node;
+            }
+        }
+        return null;
+    }
+}
+
+
+```
+
+480 · Binary Tree Paths
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root of the binary tree
+     * @return: all root-to-leaf paths
+     *          we will sort your return value in output
+     */
+    public List<String> binaryTreePaths(TreeNode root) {
+        // write your code here
+        List<String> result = new ArrayList<>();
+        helper(root, "", result);
+        return result;
+    }
+    private void helper(TreeNode root, String save, List<String> result) {
+        if (root == null) {
+            return;
+        } else {
+            save = save + Integer.toString(root.val);
+        }
+        if (root.left == null && root.right == null) {
+            result.add(save);
+        } else {
+            save = save + "->" ;
+            helper(root.left, save, result);
+            helper(root.right, save, result);
+        }
+    }
+}
+
+```
+
+112 · Remove Duplicates from Sorted List
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: head is the head of the linked list
+     * @return: head of linked list
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        // write your code here
+        if (head == null) {
+            return head;
+        }
+        ListNode node = head;
+        while (node.next != null) {
+            if (node.val == node.next.val) {
+                node.next = node.next.next;
+            } else {
+                node = node.next;
+            }
+        }
+        return head;
+    }
+}
+
+```
+
+35 · Reverse Linked List
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: n
+     * @return: The new head of reversed linked list.
+     */
+    public ListNode reverse(ListNode head) {
+        // write your code here
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode current = head;
+        ListNode prev = null;
+        ListNode furture = null;
+        while (current != null) {
+            furture = current.next;
+            current.next = prev;
+            prev = current;
+            current = furture;
+        }
+        return prev;
+    }
+}
+
+```
+228 · Middle of Linked List
+
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: the head of linked list.
+     * @return: a middle node of the linked list
+     */
+    public ListNode middleNode(ListNode head) {
+        // write your code here
+        if (head == null || head.next == null) {
+            return head;
+        }
+            ListNode slow = head;
+            ListNode fast = head.next;
+            while (fast != null && fast.next != null) {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+            return slow;
+    }
+}
+
+```
+
+96 · Partition List
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: The first node of linked list
+     * @param x: An integer
+     * @return: A ListNode
+     */
+    public ListNode partition(ListNode head, int x) {
+        // write your code here
+        
+        ListNode dummy1 = new ListNode(0);
+        ListNode dummy2 = new ListNode(0);
+        ListNode c1 = dummy1;
+        ListNode c2 = dummy2;
+        ListNode current = head;
+
+        while(current != null) {
+            if (current.val < x) {
+                c1.next = current;
+                c1 = c1.next;
+                current = current.next;
+            } else {
+                c2.next = current;
+                c2 = c2.next;
+                current = current.next;
+            }
+        }
+        c1.next = dummy2.next;
+        c2.next = null;
+        return dummy1.next;
+    }
+}
+
+```
+
+1292 · Odd Even Linked List
+
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: a singly linked list
+     * @return: Modified linked list
+     */
+    public ListNode oddEvenList(ListNode head) {
+        // write your code here
+        if (head == null) {
+            return head;
+        }
+        ListNode odd = head;
+        ListNode even = head.next;
+        ListNode evendummy = even;
+        while (even != null && even.next != null) {
+            odd.next = even.next;
+            odd = odd.next;
+            even.next = even.next.next;
+            even = even.next;
+        }
+        odd.next = evendummy;
+        return head;
     }
 }
 
