@@ -939,3 +939,174 @@ public class Solution {
 }
 
 ```
+102 · Linked List Cycle
+
+```java
+
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return false;
+        }
+        ListNode fast;
+        ListNode slow;
+        fast = head;
+        slow = head;
+        do {
+            if (fast == null || fast.next == null) {
+                return false;
+            }
+            fast = fast.next.next;
+            slow = slow.next;
+        } while (fast != slow);
+        
+        return true;
+    }
+}
+```
+
+165 · Merge Two Sorted Lists
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param l1: ListNode l1 is the head of the linked list
+     * @param l2: ListNode l2 is the head of the linked list
+     * @return: ListNode head of linked list
+     */
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        // write your code here]
+        if (l1 == null) {
+            return l2;
+        }
+        if (l2 == null) {
+            return l1;
+        }
+        ListNode head, current;
+        if ( l1.val < l2.val) {
+            head = l1;
+            l1 = l1.next;
+        } else {
+            head = l2;
+            l2 = l2.next;
+        }
+        current = head;
+        while (l1 != null && l2 != null ) {
+            if (l1.val < l2.val) {
+                current.next = l1;
+                l1 = l1.next;
+            } else {
+                current.next = l2;
+                l2 = l2.next;
+            }
+            current = current.next;
+        }
+        if (l1 != null) {
+            current.next = l1;
+        }
+        if (l2 != null) {
+            current.next = l2;
+        }
+        return head;
+    }
+}
+
+```
+380 · Intersection of Two Linked Lists
+
+```java
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        
+        ListNode node = headA;
+
+        while (node.next != null) {
+            node = node.next;
+        }
+        
+        node.next = headB;
+        ListNode result = findCycleNode(headA);
+        node.next = null;
+        return result;
+    }
+    
+    private ListNode findCycleNode(ListNode head) {
+        ListNode fast, slow;
+        fast = head;
+        slow = head;
+        
+        do {
+            if (fast == null || fast.next == null) {
+                return null;
+            }
+            fast = fast.next.next;
+            slow = slow.next;
+        } while (fast != slow);
+        
+        ListNode result = head;
+        while (result != fast) {
+            result = result.next;
+            fast = fast.next;
+        }
+        
+        return result;
+    }
+}
+
+```
+511 · Swap Two Nodes in Linked List
+
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: a ListNode
+     * @param v1: An integer
+     * @param v2: An integer
+     * @return: a new head of singly-linked list
+     */
+    public ListNode swapNodes(ListNode head, int v1, int v2) {
+        // write your code here
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode p1 = dummy;
+        ListNode p2 = dummy;
+        while (p1.next != null && p1.next.val != v1) {
+            p1 = p1.next;
+        }
+        while (p2.next != null && p2.next.val != v2) {
+            p2 = p2.next;
+        }
+        if (p1.next == null || p2.next == null) {
+            return head;
+        }
+        
+    }
+}
+
+```
