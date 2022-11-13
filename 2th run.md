@@ -967,7 +967,7 @@ public class Solution {
 
 165 · Merge Two Sorted Lists
 ```java
-/**
+//**
  * Definition for ListNode
  * public class ListNode {
  *     int val;
@@ -986,39 +986,18 @@ public class Solution {
      * @return: ListNode head of linked list
      */
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        // write your code here]
+        // write your code here
         if (l1 == null) {
             return l2;
-        }
-        if (l2 == null) {
+        } else if (l2 == null) {
             return l1;
-        }
-        ListNode head, current;
-        if ( l1.val < l2.val) {
-            head = l1;
-            l1 = l1.next;
+        } else if (l1.val < l2.val) {
+            l1.next = mergeTwoLists(l1.next ,l2);
+            return l1;
         } else {
-            head = l2;
-            l2 = l2.next;
+            l2.next = mergeTwoLists(l1, l2.next);
+            return l2;
         }
-        current = head;
-        while (l1 != null && l2 != null ) {
-            if (l1.val < l2.val) {
-                current.next = l1;
-                l1 = l1.next;
-            } else {
-                current.next = l2;
-                l2 = l2.next;
-            }
-            current = current.next;
-        }
-        if (l1 != null) {
-            current.next = l1;
-        }
-        if (l2 != null) {
-            current.next = l2;
-        }
-        return head;
     }
 }
 
@@ -1026,44 +1005,36 @@ public class Solution {
 380 · Intersection of Two Linked Lists
 
 ```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
 public class Solution {
+    /**
+     * @param headA: the first list
+     * @param headB: the second list
+     * @return: a ListNode
+     */
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        // write your code here
         if (headA == null || headB == null) {
             return null;
         }
-        
-        ListNode node = headA;
-
-        while (node.next != null) {
-            node = node.next;
+        ListNode pA = headA;
+        ListNode pB = headB;
+        while (pA != pB) {
+            pA = pA == null ? headB : pA.next;
+            pB = pB == null ? headA : pB.next;
         }
-        
-        node.next = headB;
-        ListNode result = findCycleNode(headA);
-        node.next = null;
-        return result;
-    }
-    
-    private ListNode findCycleNode(ListNode head) {
-        ListNode fast, slow;
-        fast = head;
-        slow = head;
-        
-        do {
-            if (fast == null || fast.next == null) {
-                return null;
-            }
-            fast = fast.next.next;
-            slow = slow.next;
-        } while (fast != slow);
-        
-        ListNode result = head;
-        while (result != fast) {
-            result = result.next;
-            fast = fast.next;
-        }
-        
-        return result;
+        return pA;
     }
 }
 
@@ -1094,19 +1065,120 @@ public class Solution {
         // write your code here
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        ListNode p1 = dummy;
-        ListNode p2 = dummy;
-        while (p1.next != null && p1.next.val != v1) {
-            p1 = p1.next;
+        ListNode prev1 = dummy;
+        ListNode prev2 = dummy;
+
+        while (prev1.next != null && prev1.next.val != v1) {
+            prev1 = prev1.next;
         }
-        while (p2.next != null && p2.next.val != v2) {
-            p2 = p2.next;
+        while (prev2.next != null && prev2.next.val != v2) {
+            prev2 = prev2.next;
         }
-        if (p1.next == null || p2.next == null) {
+        if (prev1.next == null || prev2.next == null){
             return head;
         }
-        
+        ListNode node1 = prev1.next;
+        ListNode node2 = prev2.next;
+        prev1.next = prev2.next;
+        prev2.next = node1;
+        ListNode temp = node1.next;
+        node1.next = node2.next;
+        node2.next = temp;
+        return dummy.next;
     }
 }
+```
+
+99 · Reorder List
+
+```java
+class Solution {
+    public void reorderList(ListNode head) {
+        if (head == null) {
+            return;
+        }
+        ListNode mid = middleNode(head);
+        ListNode l1 = head;
+        ListNode l2 = mid.next;
+        mid.next = null;
+        l2 = reverseList(l2);
+        mergeList(l1, l2);
+    }
+
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        ListNode next = null;
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+    public void mergeList(ListNode l1, ListNode l2) {
+        ListNode l1_tmp;
+        ListNode l2_tmp;
+        while (l1 != null && l2 != null) {
+            l1_tmp = l1.next;
+            l2_tmp = l2.next;
+
+            l1.next = l2;
+            l1 = l1_tmp;
+
+            l2.next = l1;
+            l2 = l2_tmp;
+        }
+    }
+}
+
+
+```
+
+539 · Move Zeroes
+
+```java
+
+public class Solution {
+    /**
+     * @param nums: an integer array
+     * @return: nothing
+     */
+    public void moveZeroes(int[] nums) {
+        // write your code here
+        int ZP = 0;
+        int NZP = 0;
+        while (NZP < nums.length) {
+            if (nums[NZP] != 0) {
+                if (ZP != NZP) {
+                    nums[ZP] = nums[NZP];
+                }
+                ZP++;
+            }
+            NZP++;
+        }
+        while (ZP < nums.length) {
+            nums[ZP++] = 0;
+        }
+    }
+}
+
+
+```
+31 · Partition Array
+```
+
 
 ```
