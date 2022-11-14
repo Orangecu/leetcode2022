@@ -1177,8 +1177,143 @@ public class Solution {
 
 
 ```
-31 · Partition Array
+608 · Two Sum II - Input array is sorted
 ```
+public class Solution {
+    /**
+     * @param nums: an array of Integer
+     * @param target: target = nums[index1] + nums[index2]
+     * @return: [index1 + 1, index2 + 1] (index1 < index2)
+     */
+    public int[] twoSum(int[] nums, int target) {
+        // write your code here
+        if (nums == null || nums.length < 2) {
+            return new int[] {-1, -1};
+        }
+        int start = 0;
+        int end = nums.length -1;
+        while (start < end) {
+            if (nums[start] + nums[end] == target) {
+                return new int[] {start + 1, end + 1};
+            }
+            if (nums[start] + nums[end] < target) {
+                start++;
+            } else {
+                end--;
+            }
+        }
+        return new int[]{-1, -1};
+    }
+}
+
+```
+609 · Two Sum - Less than or equal to target
+
+```java
+public class Solution {
+    /**
+     * @param nums: an array of integer
+     * @param target: an integer
+     * @return: an integer
+     */
+    public int twoSum5(int[] nums, int target) {
+        // write your code here
+        if (nums == null) {
+            return 0;
+        }
+        Arrays.sort(nums);
+        int left = 0;
+        int right = nums.length - 1;
+        int count = 0;
+        while (left < right) {
+            if (nums[left] + nums[right] <= target) {
+                count += right - left;
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return count;
+    }
+}
+
+```
+443 · Two Sum - Greater than target
+
+```java
+public class Solution {
+    /**
+     * @param nums: an array of integer
+     * @param target: An integer
+     * @return: an integer
+     */
+    public int twoSum2(int[] nums, int target) {
+        // write your code here
+        if ( nums == null) {
+            return 0;
+        }
+        Arrays.sort(nums);
+        int left = 0;
+        int right = nums.length - 1;
+        int count = 0;
+        while (left < right) {
+            if (nums[left] + nums[right] <= target) {
+                left++;
+            } else {
+                count += right - left;
+                right--;
+            }
+        }
+        return count;
+    }
+}
+
+```
+148 · Sort Colors
+
+```java
+public class Solution {
+    /**
+     * @param nums: A list of integer which is 0, 1 or 2
+     * @return: nothing
+     */
+    public void sortColors(int[] nums) {
+        // write your code here
+        int left = 0;
+        int right = nums.length - 1;
+        int mid = 0;
+
+        while (mid <= right) {
+            if (nums[mid] == 0) {
+                swap(nums, mid, left);
+                mid++;
+                left++;
+            } 
+            else if (nums[mid] == 2) {
+                swap(nums, mid, right);
+                right--;
+            }
+            else {
+                mid++;
+            }
+        }
+    }
+    private void swap(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+}
+
+```
+464 · Sort Integers II
+
+```java
+
+
+```
+
+```java
 
 
 ```
