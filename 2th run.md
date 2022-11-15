@@ -1309,11 +1309,78 @@ public class Solution {
 464 · Sort Integers II
 
 ```java
+public class Solution {
+    /**
+     * @param colors: A list of integer
+     * @param k: An integer
+     * @return: nothing
+     */
+    public void sortColors2(int[] colors, int k) {
+
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        
+        for (int i = 0; i < colors.length; i++) {
+            int currentCount = map.getOrDefault(colors[i], 0);
+            map.put(colors[i], currentCount + 1);
+        }
+        int index = 0; 
+        for (int i = 1; i <= k; i++) {
+            int count = map.getOrDefault(i, 0);
+            for (int j = 0; j < count; j++) {
+                colors[index] = i; 
+                index++;
+            }
+        }
+
+    }
+}
 
 
 ```
+464 · Sort Integers II
 
 ```java
+public class Solution {
+    /**
+     * @param a: an integer array
+     * @return: nothing
+     */
+    public void sortIntegers2(int[] a) {
+        // write your code here
+        int[] save = new int[a.length];
+        mergeSort(a, 0, a.length - 1, save);
+    }
+    private void mergeSort(int[] a, int start, int end, int[] save) {
+        if (start >= end) {
+            return;
+        }
+        mergeSort(a, start, (end + start) / 2, save );
+        mergeSort(a, (end + start) / 2 + 1, end, save);
+        merge(a, start, end, save);
+    }
+    public void merge(int[] a, int start, int end, int[] save) {
 
+        int indexStart = start;
+        int indexEnd = (end + start) / 2 + 1;
+        int index = start;
+
+        while (indexStart <= ((end + start) / 2) && indexEnd <= end) {
+            if (a[indexStart] < a[indexEnd]) {
+                save[index++] = a[indexStart++];
+            } else {
+                save[index++] = a[indexEnd++];
+            }
+        }
+        while (indexStart <= (end + start) / 2) {
+            save[index++] = a[indexStart++];
+        }
+        while (indexEnd <= end) {
+            save[index++] = a[indexEnd++];
+        }  
+        for (int i = 0; i <= end; i++) {
+            a[i] = save[i];
+        }
+    } 
+}
 
 ```
