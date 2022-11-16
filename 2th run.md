@@ -1178,7 +1178,7 @@ public class Solution {
 
 ```
 608 · Two Sum II - Input array is sorted
-```
+```java
 public class Solution {
     /**
      * @param nums: an array of Integer
@@ -1306,7 +1306,7 @@ public class Solution {
 }
 
 ```
-464 · Sort Integers II
+464 · Sort color II
 
 ```java
 public class Solution {
@@ -1381,6 +1381,186 @@ public class Solution {
             a[i] = save[i];
         }
     } 
+}
+
+```
+
+461 · Kth Smallest Numbers in Unsorted Array
+
+```java
+
+public class Solution {
+    public int kthSmallest(int k, int[] nums) {
+        return quickSelect(nums, 0, nums.length - 1, k - 1);
+    }
+
+    public int quickSelect(int[] A, int start, int end, int k) {
+        int (start == end) {
+            return A[start];
+        }
+
+        int left = start, right = end;
+        int pivot = A[(start + end) / 2];
+
+        while (left <= right) {
+            while (left <= right && A[left] < pivot) {
+                left++;
+            }
+            while (left <= right && A[right] > pivot) {
+                right--;
+            }
+            if (left <= right) {
+                int temp = A[left];
+                A[left] = A[right];
+                A[right] = temp;
+                left++;
+                right--;
+            }
+        }
+
+        if (right >= k && start <= right) {
+            return quickSelect(A, start, right, k);
+        } else if (left <= k && left <= end) {
+            return quickSelect(A, left, end, k);
+        } else {
+            return A[k];
+        }
+    }
+}
+
+```
+
+5 · Kth Largest Element
+
+```java
+// O(n)
+public class Solution {
+    public int kthLargestElement(int k, int[] nums) {
+        if (nums == null) {
+            return -1;
+        }
+
+        return quickSelect(nums, 0, nums.length - 1, k);
+    }
+    private int quickSelect(int[] nums, int left, int right, int k) {
+        if (left == right) {
+            return nums[left];
+        }
+        int start = left, end = right;
+        int pivot = nums[(left + right) / 2];
+        while (start <= end) {
+            while (start <= end && nums[start] > pivot) {
+                start++;
+            }
+            while (start <= end && nums[end] < pivot) {
+                end--;
+            }
+            if (start <= end) {
+                swap(nums, start, end);
+                start++;
+                end--;
+            }
+        }
+        if (left + k - 1 <= end) {
+            return quickSelect(nums, left, end, k);
+        }
+        if (left + k - 1 >= start) {
+            return quickSelect(nums, start, right, k - (start - left));  
+        }
+        return nums[end + 1];
+    }
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+
+```
+
+6 · Merge Two Sorted Arrays
+
+```java
+class Solution {
+    /**
+     * @param A and B: sorted integer array A and B.
+     * @return: A new sorted integer array
+     */
+    public int[] mergeSortedArray(int[] A, int[] B) {
+        if (A == null || B == null) {
+            return null;
+        }
+        int[] result = new int[A.length + B.length];
+        int i = 0;
+        int j = 0; 
+        int index = 0;
+        
+        while (i < A.length && j < B.length) {
+            if (A[i] < B[j]) {
+                result[index++] a= A[i++];
+            } else {
+                result[index++] = B[j++];
+            }
+        }
+        while (i < A.length) {
+            result[index++] = A[i++];
+        }
+        while (j < B.length) {
+            result[index++] = B[j++];
+        }
+        return result;
+    }
+}
+
+```
+
+80 · Median
+
+```java
+// O(n)
+public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return: An integer denotes the middle number of the array
+     */
+    public int median(int[] nums) {
+        if (nums == null) {
+            return -1;
+        }
+        return quickSelect(nums, 0, nums.length - 1, (nums.length + 1) / 2);  
+    }
+    private int quickSelect(int[] nums, int left, int right, int k) {
+        int start = left;
+        int end = right;
+        int pivot = nums[(left + right) / 2];
+
+        while (start <= end) {
+            while (start <= end && nums[start] < pivot) {
+                start++;
+            }
+            while (start <= end && nums[end] > pivot) {
+                end--;
+            }
+            if (start <= end) {
+                swap(nums, start, end);
+                start++;
+                end--;
+            }
+        }
+        if (left + k - 1 <= end) {
+            return quickSelect(nums, left, end, k);
+        }
+        if (left + k - 1 >= start) {
+            return quickSelect(nums, start, right, k - (start - left));
+        }
+        return nums[end + 1];
+    }
+    
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 }
 
 ```
