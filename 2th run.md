@@ -1564,3 +1564,173 @@ public class Solution {
 }
 
 ```
+Wrong
+
+```java
+
+public class Solution {
+    /**
+     * @param k: An integer
+     * @param nums: An integer array
+     * @return: kth smallest element
+     */
+    public int kthSmallest(int k, int[] nums) {
+        // write your code here
+        return quickSelect(nums, 0, nums.length-1, k - 1);
+    }
+    private int quickSelect(int[] nums, int start, int end, int k) {
+        int (start == end) {
+            return A[start];
+        }
+        int left = start;
+        int right = end;
+        
+        int mid = nums[(right - left) / 2];
+
+        while (left <= right) {
+            while (left <= right && nums[left] < mid) {
+                left++;
+            }
+            while (left <= right && nums[right] > mid) {
+                right--;
+            }
+            if (left <= right) {
+                int temp = nums[left];
+                nums[left] = nums[right];
+                nums[right] = temp;
+                left++;
+                right--;
+            }
+        }
+        if (start < end && right > k) {
+            return quickSelect(nums, start, mid, k);
+        }
+        if (start < end && left < k ) {
+            return quickSelect(nums, mid, end, k);
+        } else {
+            return nums[start];
+        }
+    }
+}
+
+```
+
+585 · Maximum Number in Mountain Sequence
+```java
+public class Solution {
+    /**
+     * @param nums: a mountain sequence which increase firstly and then decrease
+     * @return: then mountain top
+     */
+    public int mountainSequence(int[] nums) {
+        // write your code here
+        if (nums == null) {
+            return 0;
+        }
+        int start = 0;
+        int end = nums.length - 1;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+
+            if (nums[mid] > nums[mid + 1]) {
+                end = mid;
+            } else {
+                start = mid;
+            }
+        }
+        return Math.max(nums[start], nums[end]);
+    }
+}
+
+```
+457 · Classical Binary Search
+
+```java
+
+public class Solution {
+    /**
+     * @param nums: An integer array sorted in ascending order
+     * @param target: An integer
+     * @return: An integer
+     */
+    public int findPosition(int[] nums, int target) {
+        // write your code here
+        if (nums == null) {
+            return 0;
+        }
+        int start = 0;
+        int end = nums.length - 1;
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            int num = nums[mid];
+            if (num == target) {
+                return mid;
+            } else if (num > target) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+14 · First Position of Target
+
+```java
+public class Solution {
+    /**
+     * @param nums: The integer array.
+     * @param target: Target to find.
+     * @return: The first position of target. Position starts from 0.
+     */
+    public int binarySearch(int[] nums, int target) {
+        // write your code here
+        if (nums == null) {
+            return 0;
+        }
+        int start = 0;
+        int end = nums.length - 1;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] == target) {
+                end = mid;
+            } else if (nums[mid] < target) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        if (nums[start] == target) {
+            return start;
+        } 
+        if (nums[end] == target) {
+            return end;
+        }
+        return -1;
+    }
+}
+
+```
+196 · Missing Number
+
+```java
+
+public class Solution {
+    /**
+     * @param nums: An array of integers
+     * @return: An integer
+     */
+    public int findMissing(int[] nums) {
+        // write your code here
+        int length = nums.length;
+        int total = length * (length + 1) / 2;
+        int count = 0;
+        for (int i = 0; i < length; i++) {
+            count = count + nums[i];
+        }
+        return total - count;
+    }
+}
+```
