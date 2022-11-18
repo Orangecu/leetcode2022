@@ -1388,43 +1388,49 @@ public class Solution {
 461 · Kth Smallest Numbers in Unsorted Array
 
 ```java
-
 public class Solution {
+    /**
+     * @param k: An integer
+     * @param nums: An integer array
+     * @return: kth smallest element
+     */
     public int kthSmallest(int k, int[] nums) {
+        // write your code here
         return quickSelect(nums, 0, nums.length - 1, k - 1);
     }
-
-    public int quickSelect(int[] A, int start, int end, int k) {
-        int (start == end) {
-            return A[start];
+    private int quickSelect(int[]nums, int start, int end, int k) {
+        if (start >= end) {
+            return nums[k];
         }
-
-        int left = start, right = end;
-        int pivot = A[(start + end) / 2];
+        int left = start;
+        int right = end;
+        int mid = nums[(start + end) / 2];
 
         while (left <= right) {
-            while (left <= right && A[left] < pivot) {
+            while (left <= right && nums[left] < mid) {
                 left++;
             }
-            while (left <= right && A[right] > pivot) {
+            while (left <= right && nums[right] > mid) {
                 right--;
             }
             if (left <= right) {
-                int temp = A[left];
-                A[left] = A[right];
-                A[right] = temp;
+                swap(nums, left, right);
                 left++;
                 right--;
             }
         }
-
-        if (right >= k && start <= right) {
-            return quickSelect(A, start, right, k);
-        } else if (left <= k && left <= end) {
-            return quickSelect(A, left, end, k);
+        if (k <= right) {
+            return quickSelect( nums, start, right, k);
+        } else if (k >= left) {
+            return quickSelect( nums, left, end, k);
         } else {
-            return A[k];
+            return nums[k];
         }
+    }
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }
 
@@ -1433,41 +1439,44 @@ public class Solution {
 5 · Kth Largest Element
 
 ```java
-// O(n)
 public class Solution {
+    /**
+     * @param k: An integer
+     * @param nums: An array
+     * @return: the Kth largest element
+     */
     public int kthLargestElement(int k, int[] nums) {
-        if (nums == null) {
-            return -1;
-        }
-
-        return quickSelect(nums, 0, nums.length - 1, k);
+        // write your code here
+        return quickSelect(nums, 0, nums.length - 1, nums.length - k);
     }
-    private int quickSelect(int[] nums, int left, int right, int k) {
-        if (left == right) {
-            return nums[left];
+    private int quickSelect(int[]nums, int start, int end, int k) {
+        if (start >= end) {
+            return nums[k];
         }
-        int start = left, end = right;
-        int pivot = nums[(left + right) / 2];
-        while (start <= end) {
-            while (start <= end && nums[start] > pivot) {
-                start++;
+        int left = start;
+        int right = end;
+        int mid = nums[(start + end) / 2];
+
+        while (left <= right) {
+            while (left <= right && nums[left] < mid) {
+                left++;
             }
-            while (start <= end && nums[end] < pivot) {
-                end--;
+            while (left <= right && nums[right] > mid) {
+                right--;
             }
-            if (start <= end) {
-                swap(nums, start, end);
-                start++;
-                end--;
+            if (left <= right) {
+                swap(nums, left, right);
+                left++;
+                right--;
             }
         }
-        if (left + k - 1 <= end) {
-            return quickSelect(nums, left, end, k);
+        if (k <= right) {
+            return quickSelect( nums, start, right, k);
+        } else if (k >= left) {
+            return quickSelect( nums, left, end, k);
+        } else {
+            return nums[k];
         }
-        if (left + k - 1 >= start) {
-            return quickSelect(nums, start, right, k - (start - left));  
-        }
-        return nums[end + 1];
     }
     private void swap(int[] nums, int i, int j) {
         int temp = nums[i];
@@ -1580,7 +1589,7 @@ public class Solution {
     }
     private int quickSelect(int[] nums, int start, int end, int k) {
         int (start == end) {
-            return A[start];
+            return numss[start];
         }
         int left = start;
         int right = end;
@@ -1731,6 +1740,69 @@ public class Solution {
             count = count + nums[i];
         }
         return total - count;
+    }
+}
+```
+75 · Find Peak Element
+```java
+
+class Solution {
+    /**
+     * @param A: An integers array.
+     * @return: return any of peek positions.
+     */
+    public int findPeak(int[] A) {
+
+        int start = 1;
+        int end = A.length - 2;
+
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (A[mid] < A[mid - 1]) {
+                end = mid;
+            } else if (A[mid] < A[mid + 1]) {
+                start = mid;
+            } else {
+                return mid;
+            }
+        }
+        if (A[start] < A[end]) {
+            return end;
+        } else {
+            return start;
+        }
+    }
+}
+
+
+       
+```
+
+159 · Find Minimum in Rotated Sorted Array
+```java
+public class Solution {
+    /**
+     * @param nums: a rotated sorted array
+     * @return: the minimum number in the array
+     */
+    public int findMin(int[] nums) {
+        // write your code here
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        
+        int start = 0, end = nums.length - 1;
+        
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] > nums[end]) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        
+        return Math.min(nums[start], nums[end]);
     }
 }
 ```
