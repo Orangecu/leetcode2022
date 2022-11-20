@@ -1806,3 +1806,197 @@ public class Solution {
     }
 }
 ```
+17 · Subsets DFS
+```java
+class Solution {
+    /**
+     * @param S: A set of numbers.
+     * @return: A list of lists. All valid subsets.
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> results = new ArrayList<>();
+        
+        if (nums == null) {
+            return results;
+        }
+        if (nums.length == 0) {
+            results.add(new ArrayList<Integer>());
+            return results;
+        }
+        
+        Arrays.sort(nums);
+        helper(new ArrayList<Integer>(), nums, 0, results);
+        return results;
+    }
+
+    private void helper(ArrayList<Integer> subset, int[] nums, int startIndex, List<List<Integer>> results) {
+
+        results.add(new ArrayList<Integer>(subset));
+        
+        for (int i = startIndex; i < nums.length; i++) {
+            subset.add(nums[i]);
+            helper(subset, nums, i + 1, results);
+            subset.remove(subset.size() - 1);
+        }
+    }
+}
+
+```
+17 · Subsets BFS
+```java
+public class Solution {
+    /*
+     * @param nums: A set of numbers
+     * @return: A list of lists
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        if (nums == null) {
+            return new ArrayList<>();
+        }
+        
+        List<List<Integer>> queue = new ArrayList<>();
+        int index = 0;
+        
+        queue.add(new LinkedList<Integer>());
+        while (index < queue.size()) {
+            List<Integer> subset = queue.get(index++);
+            for (int i = 0; i < nums.length; i++) {
+                if (subset.size() != 0 && subset.get(subset.size() - 1) >= nums[i]) {
+                    continue;
+                }
+                List<Integer> newSubset = new ArrayList<>(subset);
+                newSubset.add(nums[i]);
+                queue.add(newSubset);
+            }
+        }
+        
+        return queue;
+    }
+}
+
+
+```
+15 · Permutations
+
+```java
+
+public class Solution {
+    /**
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
+     *          we will sort your return value in output
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        // write your code here
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums == null) {
+            return result;
+        }
+        helper(nums, new boolean[], new ArrayList<Integer>(), result);
+        return result;
+    }
+    private void helper(int[] nums, boolean[] used, List<Integer> current, List<List<Integer>> result) {
+        if (nums.length == current.size()) {
+            result.add(new ArrayList<Integer>(current));
+        }
+        for (i = 0; i < nums.length; i++) {
+            if (used[i]) {
+                continue;
+            }
+            current.add(nums[i]);
+            used[i] = true;
+            helper(nums, used, current, result);
+            used[i] = false;
+            current.remove(current.size() - 1);
+        }
+    }
+}
+```
+
+69 · Binary Tree Level Order Traversal
+```java 
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Level order a list of lists of integer
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        // write your code here
+        List result = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        if (root == null) {
+            return result;
+        }
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            ArrayList<Integer> level = new ArrayList<Integer>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode head = queue.poll();
+                level.add(head.val);
+                if (head.left != null) {
+                    queue.offer(head.left);
+                }
+                if (head.right != null) {
+                    queue.offer(head.right);
+                }
+            }
+            result.add(level);
+        }
+        return result;
+    }
+}
+
+```
+427 · Generate Parentheses
+
+```java
+public class Solution {
+    /**
+     * @param n: n pairs
+     * @return: All combinations of well-formed parentheses
+     *          we will sort your return value in output
+     */
+    public List<String> generateParenthesis(int n) {
+        // write your code here
+
+        List<String> result = new ArrayList<>();
+        dfs(n, 0, 0, new StringBuilder(), result);
+        return result;
+    }
+
+    private void dfs(int n, int left, int right, StringBuilder sb, List<String> result) {
+        if (left == n && right == n) {
+            result.add(sb.toString());
+        }
+
+        if (right > left) {
+            return;
+        } 
+        if (left > n || right > n) {
+            return;
+        }
+
+        sb.append('(');
+        dfs(n, left + 1, right, sb, result);
+        sb.setLength(sb.length() - 1);
+
+        sb.append(')');
+        dfs(n, left, right + 1, sb, result);
+        sb.setLength(sb.length() - 1);
+    }
+}
+
+```
