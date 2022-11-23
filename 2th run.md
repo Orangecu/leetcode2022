@@ -2000,3 +2000,171 @@ public class Solution {
 }
 
 ```
+
+135 · Combination Sum
+
+```java
+public class Solution {
+    /**
+     * @param candidates: A list of integers
+     * @param target: An integer
+     * @return: A list of lists of integers
+     *          we will sort your return value in output
+     */
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        // write your code here
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> comb = new ArrayList<>();
+        if ( candidates == null) {
+            return result;
+        }
+        Arrays.sort(candidates);
+        helperDfs(candidates, 0, target, comb, result);
+        return result;
+    }
+    private void helperDfs(int[] candidates, int index, int target, List<Integer> comb, List<List<Integer>> result) {
+        if (target == 0) {
+            result.add(new ArrayList<Integer>(comb));
+        }
+        for (int i = index; i < candidates.length; i++) {
+            if (candidates[i] > target) {
+                break;
+            }
+            if (i != 0 && candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+            comb.add(candidates[i]);
+            helperDfs(candidates, i, target - candidates[i], comb, result);
+            comb.remove(comb.size() - 1);
+
+        }
+
+    }
+}
+
+```
+153 · Combination Sum II
+
+```java
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> results = new ArrayList<>();
+        List<Integer> combination = new ArrayList<Integer>();
+        if (candidates == null || candidates.length == 0) {
+            return results;
+        }
+        
+        Arrays.sort(candidates);
+        helper(candidates, 0, combination, target, results);
+        
+        return results;
+    }
+    
+    private void helper(int[] candidates, int startIndex, List<Integer> combination, int target, List<List<Integer>> results) {
+        
+        if (target == 0) {
+            results.add(new ArrayList<Integer>(combination));
+            return;
+        }
+        
+        for (int i = startIndex; i < candidates.length; i++) {
+            if (i != startIndex && candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+            if (target < candidates[i]) {
+                break;
+            }
+            combination.add(candidates[i]);
+            helper(candidates, i + 1, combination, target -candidates[i], results);
+            combination.remove(combination.size() - 1);
+        }
+    }
+}
+
+```
+136 · Palindrome Partitioning
+```java
+public class Solution {
+    /*
+     * @param s: A string
+     * @return: A list of lists of string
+     */
+    public List<List<String>> partition(String s) {
+        // write your code here
+        List<List<String>> result = new ArrayList<>();
+        List<String> temp = new ArrayList<String>();
+
+        if (s == null || s.length() == 0) {
+            return result;
+        }
+        helper(s, 0, temp, result);
+        return result;
+    }
+    private void helper(String s, int index, List<String> temp, List<List<String>> result) {
+        if (index == s.length()) {
+            result.add(new ArrayList<String>(temp));
+            return;
+        }
+
+         for (int i = index; i < s.length(); i++) {
+            String subString = s.substring(index, i + 1);
+            if (!isPalindrome(subString)) {
+                continue;
+            }
+            temp.add(subString);
+            helper(s, i + 1, temp, result);
+            temp.remove(temp.size() - 1);
+        }
+    }
+    private boolean isPalindrome(String s) {
+        for (int i = 0, j = s.length() - 1; i < j; i++, j--) {
+            if (s.charAt(i) != s.charAt(j)) {
+                return false;
+            }        
+        }
+        return true;
+    }
+}
+
+```
+16 · Permutations II
+
+```java
+
+public class Solution {
+    /*
+     * @param :  A list of integers
+     * @return: A list of unique permutations
+     */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Deque<Integer> path = new ArrayDeque<>(nums.length);
+        boolean[] used = new boolean[nums.length];
+  
+        Arrays.sort(nums);
+ 
+        dfs(nums, used, path, res);
+        return res;
+    }
+        private void dfs(int[] nums, boolean[] used, Deque<Integer> path, List<List<Integer>> res) {
+
+        if (path.size() == nums.length) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = 0; i < nums.length; ++i) {
+            
+            if ((used[i]) || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])) {
+                continue;
+            }
+            
+            path.addLast(nums[i]);
+            used[i] = true;
+            dfs(nums, used, path, res);
+            used[i] = false;
+            path.removeLast();
+        }
+    }
+}
+```
