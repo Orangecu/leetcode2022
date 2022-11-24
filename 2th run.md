@@ -2168,3 +2168,151 @@ public class Solution {
     }
 }
 ```
+66 · Binary Tree Preorder Traversal
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Preorder in ArrayList which contains node values.
+     */
+    public List<Integer> preorderTraversal(TreeNode root) {
+        // write your code here
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        List left = preorderTraversal(root.left);
+        List right = preorderTraversal(root.right);
+
+        result.add(root.val);
+        result.addAll(left);
+        result.addAll(right);
+
+        return result;
+    }
+}
+
+```
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        List<Integer> preorder = new ArrayList<Integer>();
+        
+        if (root == null) {
+            return preorder;
+        }
+        
+        stack.push(root);
+        while (!stack.empty()) {
+            TreeNode node = stack.pop();
+            preorder.add(node.val);
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+        }
+        
+        return preorder;
+    }
+}
+
+
+```
+67 · Binary Tree Inorder Traversal
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Inorder in ArrayList which contains node values.
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        // write your code here
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        List left = inorderTraversal(root.left);
+        List right = inorderTraversal(root.right);
+
+        result.addAll(left);
+        result.add(root.val);
+        result.addAll(right);
+
+        return result;
+    }
+}
+
+```
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: Inorder in ArrayList which contains node values.
+     */
+    public ArrayList<Integer> inorderTraversal(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        TreeNode curt = root;
+        while (curt != null || !stack.empty()) {
+            while (curt != null) {
+                stack.add(curt);
+                curt = curt.left;
+            }
+            curt = stack.pop();
+            result.add(curt.val);
+            curt = curt.right;
+        }
+        return result;
+    }
+}
+
+```
