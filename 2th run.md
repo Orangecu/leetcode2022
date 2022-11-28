@@ -2316,3 +2316,137 @@ public class Solution {
 }
 
 ```
+
+86 · Binary Search Tree Iterator
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ * Example of iterate a tree:
+ * BSTIterator iterator = new BSTIterator(root);
+ * while (iterator.hasNext()) {
+ *    TreeNode node = iterator.next();
+ *    do something for node
+ * } 
+ */
+public class BSTIterator {
+    private Stack<TreeNode> stack = new Stack<>();
+    
+    public BSTIterator(TreeNode root) {
+        while (root != null) {
+            stack.push(root);
+            root = root.left;
+        }
+    }
+
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+    
+    public TreeNode next() {
+        TreeNode current = stack.peek();
+        TreeNode node = current;
+
+        if (node.right == null) {
+            node = stack.pop();
+            while (!stack.isEmpty() && stack.peek().right == node) {
+                node = stack.pop();
+            }
+        } else {
+            node = node.right;
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+        }
+        
+        return current;
+    }
+}
+
+```
+
+68 · Binary Tree Postorder Traversal
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public ArrayList<Integer> postorderTraversal(TreeNode root) {
+    ArrayList<Integer> result = new ArrayList<Integer>();
+
+    if (root == null) {
+        return result;
+    }
+
+    result.addAll(postorderTraversal(root.left));
+    result.addAll(postorderTraversal(root.right));
+    result.add(root.val);
+
+    return result;   
+}
+
+```
+
+68 · Binary Tree Postorder Traversal
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public ArrayList<Integer> postorderTraversal(TreeNode root) {
+    ArrayList<Integer> result = new ArrayList<Integer>();
+    Stack<TreeNode> stack = new Stack<TreeNode>();
+    TreeNode prev = null; 
+    TreeNode curr = root;
+
+    if (root == null) {
+        return result;
+    }
+
+    stack.push(root);
+    while (!stack.empty()) {
+        curr = stack.peek();
+        if (prev == null || prev.left == curr || prev.right == curr) { 
+            if (curr.left != null) {
+                stack.push(curr.left);
+            } else if (curr.right != null) {
+                stack.push(curr.right);
+            }
+        } else if (curr.left == prev) { 
+            if (curr.right != null) {
+                stack.push(curr.right);
+            }
+        } else { 
+            result.add(curr.val);
+            stack.pop();
+        }
+        prev = curr;
+    }
+
+    return result;
+}
+```
