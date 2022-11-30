@@ -2450,3 +2450,41 @@ public ArrayList<Integer> postorderTraversal(TreeNode root) {
     return result;
 }
 ```
+
+71 · Binary Tree Zigzag Level Order Traversal
+```java
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (root == null) {
+            return result;
+        }
+        
+        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        
+        boolean isForward = true;
+        q.offer(root);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            List<Integer> subList = new ArrayList<Integer>();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = q.poll();
+                subList.add(node.val);
+                if (node.left != null) {
+                    q.offer(node.left);
+                }
+                if (node.right != null) {
+                    q.offer(node.right);
+                }
+            }
+            if (!isForward) {
+                Collections.reverse(subList);
+            }
+            result.add(subList);
+            isForward = !isForward;
+        }
+        return result;
+    }
+}
+
+```
