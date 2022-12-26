@@ -2603,3 +2603,53 @@ public class Solution {
 }
 
 ```
+
+leetcode 344
+Reverse String
+
+```java
+class Solution {
+    public void reverseString(char[] s) {
+        int n = s.length;
+        int left = 0;
+        int right = n - 1;
+        while (left < right) {
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            
+            left++;
+            right--;
+        }
+        System.out.println(Arrays.toString(s));
+    }
+}
+```
+8 · Rotate Character Array
+```java
+
+public class Solution {
+    /**
+     * @param s: An array of char
+     * @param offset: An integer
+     * @return: nothing
+     */
+    public void rotateString(char[] str, int offset) {
+        if (str == null || str.length == 0) return;
+        offset %= str.length;
+        reverse(str, 0, str.length - offset - 1);
+        reverse(str, str.length - offset, str.length - 1);
+        reverse(str, 0, str.length - 1);
+    }
+    
+    private void reverse(char[] str, int start, int end) {
+        while (start < end) {
+            char temp = str[start];
+            str[start] = str[end];
+            str[end] = temp;
+            start += 1;
+            end -= 1;
+        }
+    }
+}
+```
