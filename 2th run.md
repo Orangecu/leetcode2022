@@ -2653,3 +2653,508 @@ public class Solution {
     }
 }
 ```
+119 · Edit Distance
+
+```java
+public class Solution {
+    /**
+     * @param word1: A string
+     * @param word2: A string
+     * @return: The minimum number of steps
+     */
+    public int minDistance(String word1, String word2) {
+        int n = word1.length();
+        int m = word2.length();
+
+        if (n * m == 0) {
+            return n + m;
+        }
+
+        int[][] D = new int[n + 1][m + 1];
+
+        for (int i = 0; i < n + 1; i++) {
+            D[i][0] = i;
+        }
+        for (int j = 0; j < m + 1; j++) {
+            D[0][j] = j;
+        }
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < m + 1; j++) {
+                int left = D[i - 1][j] + 1;
+                int down = D[i][j - 1] + 1;
+                int left_down = D[i - 1][j - 1];
+                if (word1.charAt(i - 1) != word2.charAt(j - 1)) {
+                    left_down += 1;
+                }
+                D[i][j] = Math.min(left, Math.min(down, left_down));
+            }
+        }
+        return D[n][m];
+    }
+}
+
+```
+33 · N-Queens
+
+```java
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        int[] queens = new int[n];
+        Arrays.fill(queens, -1);
+        List<List<String>> solutions = new ArrayList<List<String>>();
+        solve(solutions, queens, n, 0, 0, 0, 0);
+        return solutions;
+    }
+
+    public void solve(List<List<String>> solutions, int[] queens, int n, int row, int columns, int diagonals1, int diagonals2) {
+        if (row == n) {
+            List<String> board = generateBoard(queens, n);
+            solutions.add(board);
+        } else {
+            int availablePositions = ((1 << n) - 1) & (~(columns | diagonals1 | diagonals2));
+            while (availablePositions != 0) {
+                int position = availablePositions & (-availablePositions);
+                availablePositions = availablePositions & (availablePositions - 1);
+                int column = Integer.bitCount(position - 1);
+                queens[row] = column;
+                solve(solutions, queens, n, row + 1, columns | position, (diagonals1 | position) << 1, (diagonals2 | position) >> 1);
+                queens[row] = -1;
+            }
+        }
+    }
+
+    public List<String> generateBoard(int[] queens, int n) {
+        List<String> board = new ArrayList<String>();
+        for (int i = 0; i < n; i++) {
+            char[] row = new char[n];
+            Arrays.fill(row, '.');
+            row[queens[i]] = 'Q';
+            board.add(new String(row));
+        }
+        return board;
+    }
+}
+
+```
+97 · Maximum Depth of Binary Tree
+
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offer(root);
+        int ans = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size > 0) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+                size--;
+            }
+            ans++;
+        }
+        return ans;
+    }
+}
+
+```
+1311 · Lowest Common Ancestor of a Binary Search Tree
+
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        List<TreeNode> path_p = getPath(root, p);
+        List<TreeNode> path_q = getPath(root, q);
+        TreeNode ancestor = null;
+        for (int i = 0; i < path_p.size() && i < path_q.size(); ++i) {
+            if (path_p.get(i) == path_q.get(i)) {
+                ancestor = path_p.get(i);
+            } else {
+                break;
+            }
+        }
+        return ancestor;
+    }
+
+    public List<TreeNode> getPath(TreeNode root, TreeNode target) {
+        List<TreeNode> path = new ArrayList<TreeNode>();
+        TreeNode node = root;
+        while (node != target) {
+            path.add(node);
+            if (target.val < node.val) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        path.add(node);
+        return path;
+    }
+}
+
+```
+22 · Flatten List
+
+
+```java
+
+/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * public interface NestedInteger {
+ *
+ *     // @return true if this NestedInteger holds a single integer,
+ *     // rather than a nested list.
+ *     public boolean isInteger();
+ *
+ *     // @return the single integer that this NestedInteger holds,
+ *     // if it holds a single integer
+ *     // Return null if this NestedInteger holds a nested list
+ *     public Integer getInteger();
+ *
+ *     // @return the nested list that this NestedInteger holds,
+ *     // if it holds a nested list
+ *     // Return null if this NestedInteger holds a single integer
+ *     public List<NestedInteger> getList();
+ * }
+ */
+public class Solution {
+    public List<Integer> flatten(List<NestedInteger> nestedList) {
+
+        Stack<Iterator<NestedInteger>> stack = new Stack<>();
+        stack.push(nestedList.iterator());
+
+        List<Integer> ans = new ArrayList<>();
+        
+        while(!stack.isEmpty()){
+            Iterator<NestedInteger> i = stack.pop();
+            while(i.hasNext()){
+                NestedInteger n = i.next();
+                if(n.isInteger()){
+                    ans.add(n.getInteger());
+                }else{
+                    stack.push(i);
+                    stack.push(n.getList().iterator());
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
+39 · Recover Rotated Sorted Array
+```java
+public class Solution {
+
+    /**
+     * @param nums: An integer array
+     * @return: nothing
+     */
+    public void recoverRotatedSortedArray(List<Integer> nums) {
+        // write your code here
+        for (int i = 0; i < nums.size() - 1; i++) {
+            if (nums.get(i) > nums.get(i + 1)) {
+
+                reverse(nums,0,i);
+                reverse(nums,i+1,nums.size()-1);
+                reverse(nums,0,nums.size()-1);
+                
+                return;
+            }
+        }    
+    }
+         private void reverse(List<Integer> nums, int start, int end) {
+            for (int i = start, j = end; i < j; i++, j--) {
+            int temp = nums.get(i);
+            nums.set(i, nums.get(j));
+            nums.set(j, temp);
+        }
+    }   
+}
+
+```
+124. Binary Tree Maximum Path Sum
+
+```java
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+public class Solution {
+    int max = Integer.MIN_VALUE;
+    
+    public int maxPathSum(TreeNode root) {
+        helper(root);
+        return max;
+    }
+    
+    // helper returns the max branch 
+    // plus current node's value
+    int helper(TreeNode root) {
+        if (root == null) return 0;
+        
+        int left = Math.max(helper(root.left), 0);
+        int right = Math.max(helper(root.right), 0);
+        
+        max = Math.max(max, root.val + left + right);
+        
+        return root.val + Math.max(left, right);
+    }
+}
+
+```
+
+114 · Unique Paths
+
+
+```java
+public class Solution {
+    /**
+     * @param m: positive integer (1 <= m <= 100)
+     * @param n: positive integer (1 <= n <= 100)
+     * @return: An integer
+     */
+    public int uniquePaths(int m, int n) {
+        // write your code here
+        int [][] dp = new int [m][n];
+        dp[0][0] = 1;
+        for (i = 0; i < n; i++) {
+            for (j = ; j < n; j++) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+        return dp[m - 1] [n - 1];
+    }
+}
+
+```
+
+
+110 · Minimum Path Sum
+
+```java
+public class Solution {
+    /**
+     * @param grid: a list of lists of integers
+     * @return: An integer, minimizes the sum of all numbers along its path
+     */
+    public int minPathSum(int[][] grid) {
+        // write your code here
+        if (grid == null) {
+            return 0;
+        }
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] f = new int[m][n];
+
+        f[0][0]= grid[0][0];
+        for (int i = 1; i < m; i++) {
+            f[i][0] = f[i - 1][0] + grid[i][0];
+
+        }
+        for (int j = 1; j < n; j++) {
+            f[0][j] = f[0][j - 1] + grid[0][j];
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                f[i][j] = Math.min(f[i - 1][j], f[i][j - 1]) + grid[i][j];
+            }
+        }
+        return f[m - 1][n - 1];
+    }
+}
+
+```
+547 · Intersection of Two Arrays
+```java
+public class Solution {
+    /**
+     * @param nums1: an integer array
+     * @param nums2: an integer array
+     * @return: an integer array
+     *          we will sort your return value in output
+     */
+    public int[] intersection(int[] nums1, int[] nums2) {
+        // write your code here
+
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+
+        int length1 = nums1.length,;
+        int length2 = nums2.length;
+
+        int[] intersection = new int[length1 + length2];
+
+        int index = 0;
+        int index1 = 0;
+        int index2 = 0;
+
+        while (index1 < length1 && index2 < length2) {
+            int num1 = nums1[index1], num2 = nums2[index2];
+            if (num1 == num2) {
+                if (index == 0 || num1 != intersection[index - 1]) {
+                    intersection[index++] = num1;
+                }
+                index1++;
+                index2++;
+            } else if (num1 < num2) {
+                index1++;
+            } else {
+                index2++;
+            }
+        }
+        return Arrays.copyOfRange(intersection, 0, index);
+    }
+}
+
+
+
+```
+85 · Insert Node in a Binary Search Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+
+public class Solution {
+    /*
+     * @param root: The root of the binary search tree.
+     * @param node: insert this node into the binary search tree
+     * @return: The root of the new binary search tree.
+     */
+    public TreeNode insertNode(TreeNode root, TreeNode node) {
+        // write your code here
+
+        if (root == null) {
+            return node;
+        }
+        TreeNode insert = root;
+        while (insert != null) {
+            if (node.val < insert.val) {
+                if (insert.left == null) {
+                    insert.left = node;
+                    break;
+                } else {
+                    insert = insert.left;
+                }
+            } else {
+                if (insert.right == null) {
+                    insert.right = node;
+                    break;
+                } else {
+                    insert = insert.right;
+                }
+            }
+        }
+        return root;
+    }
+}
+
+```
+174 · Remove Nth Node From End of List
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: The first node of linked list.
+     * @param n: An integer
+     * @return: The head of linked list.
+     */
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        // write your code here
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        int length = getLength(head);
+        ListNode cur = dummy;
+        for (int i = 1; i < length - n + 1; ++i) {
+            cur = cur.next;
+        }
+        cur.next = cur.next.next;
+        ListNode ans = dummy.next;
+        return ans;
+    }
+
+    public int getLength(ListNode head) {
+        int length = 0;
+        while (head != null) {
+            ++length;
+            head = head.next;
+        }
+        return length;
+    }
+}
+
+```
+
+
+
+
+
