@@ -3287,3 +3287,55 @@ public class Solution {
 }
 
 ```
+117 · Jump Game II
+
+```java
+public class Solution {
+    public int jump(int[] a) {
+        int length = a.length;
+        int end = 0;
+        int maxPosition = 0; 
+        int steps = 0;
+        for (int i = 0; i < length - 1; i++) {
+            maxPosition = Math.max(maxPosition, i + a[i]);
+            if (i == end) {
+                end = maxPosition;
+                steps++;
+            }
+        }
+        return steps;
+    }
+}
+
+```
+
+117 · Jump Game II
+
+```java
+
+public class Solution {
+    /**
+     * @param A: A list of integers
+     * @return: An integer
+     */
+    public int jump(int[] A) {
+        // write your code here
+        if (A == null || A.length == 0) {
+            return 0;
+        }
+        
+        int n = A.length;
+        int[] dp = new int[n];
+        
+        for (int i = 1; i < n; i++) {
+            dp[i] = i;
+            for (int j = 0; j <= i; j++) {
+                if (A[j] + j >= i) {
+                    dp[i] = Math.min(dp[j] + 1, dp[i]);
+                }
+            }
+        }
+        return dp[n-1];
+    }
+}
+```
