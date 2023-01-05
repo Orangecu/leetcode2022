@@ -3339,3 +3339,72 @@ public class Solution {
     }
 }
 ```
+
+107 · Word Break  DP
+
+```java
+public class Solution {
+    /*
+     * @param s: A string
+     * @param dict: A dictionary of words dict
+     * @return: A boolean
+     */
+    public boolean wordBreak(String s, Set<String> dict) {
+        if (s == null) {
+            return true;
+        }
+        
+        int maxLength = 0;
+        for (String word : dict) {
+            maxLength = Math.max(maxLength, word.length());
+        }
+      
+        int n = s.length();
+        boolean[] dp = new boolean[n + 1];
+        dp[0] = true;
+        
+        for (int i = 1; i <= n; i++) {
+            for (int l = 1; l <= maxLength; l++) {
+                if (i < l) {
+                    break;
+                }
+                if (!dp[i - l]) {
+                    continue;
+                }
+                String word = s.substring(i - l, i);
+                if (dict.contains(word)) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        
+        return dp[n];
+    }
+}
+
+```
+DFS
+
+```java
+public class Solution {
+    public boolean wordBreak(String s, Set<String> dict) {
+        return dfs(s, dict, 0); 
+    }
+    
+    public boolean dfs(String s, Set<String> dict, int now) {
+
+        if (now == s.length()) {
+            return true;
+        }
+        
+        for (int len = 1; now + len <= s.length(); len++) {
+            if (dict.contains(s.substring(now, now + len)) && dfs(s, dict, now + len)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+```
