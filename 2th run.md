@@ -3408,3 +3408,115 @@ public class Solution {
 }
 
 ```
+N-Queens 2
+
+```java
+public class Solution {
+    /**
+     * @param n: The number of queens.
+     * @return: The total number of distinct solutions.
+     */
+    int result = 0;
+    int n;
+    Set<Integer> sum = new HashSet<Integer>();
+    Set<Integer> diff = new HashSet<Integer>();
+    Set<Integer> collin = new HashSet<Integer>();
+
+    private void search(int level) {
+        if (level == n) {
+            result++;
+            return;
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (!collin.contains(i) && !diff.contains(level - i) && !sum.contains(level + i)) {
+                collin.add(i);
+                diff.add(level - i);
+                sum.add(level + i);
+                search(level + 1);
+                collin.remove(i);
+                diff.remove(level - i);
+                sum.remove(level + i);
+            }
+        }
+    }
+
+
+    public int totalNQueens(int nn) {
+        n = nn;
+        
+        if (n <= 0) {
+            return 0;
+        }
+        search(0);
+        return result;
+    }
+}
+```
+
+
+N-Queens
+
+```java
+
+class Solution {
+    /**
+     * Get all distinct N-Queen solutions
+     * @param n: The number of queens
+     * @return: All distinct solutions
+     * For example, A string '...Q' shows a queen on forth position
+     */
+    public List<List<String>> solveNQueens(int n) {
+
+        List<List<String>> results = new ArrayList<>();
+        if (n <= 0) {
+            return results;
+        }
+        
+        search(results, new ArrayList<Integer>(), n);
+        return results;
+    }
+    
+    private void search(List<List<String>> results, List<Integer> cols, int n) {
+        if (cols.size() == n) {
+            results.add(Draw(cols));
+            return;
+        }
+        for (int colIndex = 0; colIndex < n; colIndex++) {
+            if (!isValid(cols, colIndex)) {
+                continue;
+            }
+            cols.add(colIndex);
+            search(results, cols, n);
+            cols.remove(cols.size() - 1);
+        }
+    }
+    
+    private boolean isValid(List<Integer> cols, int col) {
+        int row = cols.size();
+        for (int rowIndex = 0; rowIndex < cols.size(); rowIndex++) {
+            if (cols.get(rowIndex) == col) {
+                return false;
+            }
+            if (row + col == rowIndex + cols.get(rowIndex)) {
+                return false;
+            }
+            if (row - col == rowIndex - cols.get(rowIndex)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private List<String> Draw(List<Integer> cols) {
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < cols.size(); i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < cols.size(); j++) {
+                sb.append(j == cols.get(i) ? 'Q' : '.');
+            }
+            result.add(sb.toString());
+        }
+        return result;
+    }
+}
+```
