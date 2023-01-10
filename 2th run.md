@@ -3520,3 +3520,272 @@ class Solution {
     }
 }
 ```
+104 · Merge K Sorted Lists
+```java
+
+// version 1: Divide & Conquer
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */ 
+public class Solution {
+    /**
+     * @param lists: a list of ListNode
+     * @return: The head of one sorted list.
+     */
+    public ListNode mergeKLists(List<ListNode> lists) {
+        if (lists.size() == 0) {
+            return null;
+        }
+        return mergeHelper(lists, 0, lists.size() - 1);
+    }
+    
+    private ListNode mergeHelper(List<ListNode> lists, int start, int end) {
+        if (start == end) {
+            return lists.get(start);
+        }
+        
+        int mid = start + (end - start) / 2;
+        ListNode left = mergeHelper(lists, start, mid);
+        ListNode right = mergeHelper(lists, mid + 1, end);
+        return mergeTwoLists(left, right);
+    }
+    
+    private ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                tail.next = list1;
+                tail = list1;
+                list1 = list1.next;
+            } else {
+                tail.next = list2;
+                tail = list2;
+                list2 = list2.next;
+            }
+        }
+        if (list1 != null) {
+            tail.next = list1;
+        } else {
+            tail.next = list2;
+        }
+        
+        return dummy.next;
+    }
+}
+
+```
+56 · Two Sum
+
+
+```java
+public class Solution {
+    /**
+     * @param numbers: An array of Integer
+     * @param target: target = numbers[index1] + numbers[index2]
+     * @return: [index1, index2] (index1 < index2)
+     */
+    public int[] twoSum(int[] numbers, int target) {
+        // write your code here
+        HashMap<Integer,Integer> map = new HashMap<>();
+         
+
+        for (int i = 0; i < numbers.length; i++) {
+            if (map.get(numbers[i]) != null) {
+                int[] result = {map.get(numbers[i]), i};
+                return result;
+            }
+            map.put(target - numbers[i], i);
+        }
+        int[] result = {};
+        return result;
+    }
+}
+
+
+```
+57 · 3Sum
+
+
+```java
+public class Solution {
+    /**
+    * @param numbers : Give an array numbers of n integer
+    * @return : Find all unique triplets in the array which gives the sum of zero.
+    */
+    public List<List<Integer>> threeSum(int[] numbers) {
+        Arrays.sort(numbers);
+        
+        List<List<Integer>> results = new ArrayList();
+        for (int i = 0; i < numbers.length; i++) {
+            if (i != 0 && numbers[i] == numbers[i - 1]) {
+               continue;
+            }
+            findTwoSum(numbers, i, results);
+        }
+        
+        return results;
+    }
+    
+    private void findTwoSum(int[] nums, int index, List<List<Integer>> results) {
+        int left = index + 1, right = nums.length - 1;
+        int target = -nums[index];
+        
+        while (left < right) {
+            int twoSum = nums[left] + nums[right];
+            if (twoSum < target) {
+                left++;
+            } else if (twoSum > target) {
+                right--;
+            } else {
+                List<Integer> triple = new ArrayList();
+                triple.add(nums[index]);
+                triple.add(nums[left]);
+                triple.add(nums[right]);
+                results.add(triple);
+                left++;
+                right--;
+                while (left < right && nums[left] == nums[left - 1]) {
+                    left++;
+                }
+            }
+        }
+    }
+}
+
+```
+
+58 · 4Sum
+
+```java
+
+public class Solution {
+    /**
+     * @param numbers: Give an array
+     * @param target: An integer
+     * @return: Find all unique quadruplets in the array which gives the sum of zero
+     */
+    public List<List<Integer>> fourSum(int[] numbers, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(numbers);
+        dfs(numbers, new ArrayList<Integer>(), target, result, 0);
+        return result;
+    }
+    
+    private void dfs(int[] numbers, List<Integer> list, int target, List<List<Integer>> result, int index) {
+        if (list.size() == 4) {
+            if (target == 0) {
+                result.add(new ArrayList<Integer>(list));
+            }
+            return;
+        }
+        for (int i = index; i < numbers.length; i++) {
+            if (i != index && numbers[i] == numbers[i-1]) {
+                continue;
+            }
+            list.add(numbers[i]);
+            dfs(numbers, list, target-numbers[i], result, i+1);
+            list.remove(list.size() - 1);
+        }
+    }
+}
+```
+
+80 · Median
+
+```java
+public class Solution {
+    /**
+     * @param nums: A list of integers.
+     * @return: An integer denotes the middle number of the array.
+     */
+    public int median(int[] nums) {
+
+        return helper(nums, 0, nums.length - 1, (nums.length + 1)/2);
+
+    }
+    private int helper(int[] nums, int start, int end, int size) {
+
+        int mid = (start + end) / 2;
+        int pivot = nums[mid];
+
+        int i = start - 1;
+        int j = end + 1;
+        
+        for (int k = start; k < j; k++) {
+            if (nums[k] < pivot) {
+                i++;
+                int tmp = nums[i];
+                nums[i] = nums[k];
+                nums[k] = tmp;
+            } else if (nums[k] > pivot) {
+                j--;
+                int tmp = nums[j];
+                nums[j] = nums[k];
+                nums[k] = tmp;
+                k--;
+            }
+        }
+        if (i - start + 1 >= size) {
+            return sub(nums, start, i, size);
+        } else if (j - start >= size) {
+            return nums[j-1];
+        } else {
+            return sub(nums, j, end, size - (j - start));
+        }
+    }
+}
+
+```
+
+65 · Median of two Sorted Arrays
+
+```java
+
+public class Solution {
+    /*
+     * @param A: An integer array
+     * @param B: An integer array
+     * @return: a double whose format is *.5 or *.0
+     */
+    public double findMedianSortedArrays(int[] A, int[] B) {
+        int m = A.length;
+        int n = B.length;
+        
+        int p1 = 0;
+        int p2 = 0;
+
+        int left = -1;
+        int right = -1;
+
+        for (int i = 0; i < (n + m) / 2 + 1; i++) {
+            left = right;
+            
+            if (p1 >= A.length || p2 <B.length && A[p1] > B[p2]) {
+                right = B[p2++];
+            }
+            else {
+                right = A[p1++];
+            }
+        } 
+        return (m + n) % 2 == 1 ?  right : (left + right) / 2.0;
+    }
+}
+```
+
+
+
+```java
+
+
+```
+
+
