@@ -3781,11 +3781,482 @@ public class Solution {
 }
 ```
 
-
+900 · Closest Binary Search Tree Value
 
 ```java
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+class Solution {
+    public int closestValue(TreeNode root, double target) {
+
+        LinkedList<TreeNode> stack = new LinkedList();
+        long pred = Long.MIN_VALUE;
+
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                stack.add(root);
+                root = root.left;
+            }
+             
+            root = stack.removeLast();
+
+            if (pred <= target && target < root.val)
+                return Math.abs(pred - target) < Math.abs(root.val - target) ? (int)pred : root.val;
+
+            pred = root.val;
+            root = root.right;
+        }
+        return (int)pred;
+    }
+}
+```
+
+689 · Two Sum IV - Input is a BST
+```java
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /*
+     * @param : the root of tree
+     * @param : the target sum
+     * @return: two numbers from tree which sum is n
+     */
+    public int[] twoSum(TreeNode root,  ) {
+        // write your code here
+        if (root == null) {
+            return null;
+        }
+        Set<Integer> set = new HashSet<Integer>();
+        Queue<TreeNode> queue = new ArrayDeque<TreeNode>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+
+            TreeNode node = queue.poll();
+
+            if (set.contains(n - node.val)) {
+                return new int[]{node.val, n - node.val};
+            }
+
+            set.add(node.val);
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+        return null;
+    }
+}
+
+```
+
+362 · Sliding Window Maximum
+
+```java
+public class Solution {
+    int[] a;
+    /**
+     * @param nums: A list of integers.
+     * @return: The maximum number inside the window at each moving.
+     */
+    private void inQueue(Deque<Integer> deque, int pos) {
+        while (!deque.isEmpty() && a[deque.peekLast()] <= a[pos]) {
+            deque.pollLast();
+        }
+        deque.offer(pos);
+    }
+    
+    private void outQueue(Deque<Integer> deque, int pos) {
+        if (deque.peekFirst() == pos) {
+            deque.pollFirst();
+        }
+    }
+    
+    public ArrayList<Integer> maxSlidingWindow(int[] nums, int k) {
+        a = nums;
+
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        Deque<Integer> deque = new ArrayDeque<Integer>();
+        
+        if (nums.length == 0) {
+            return result;
+        }
+        for (int i = 0; i < k - 1; i++) {
+            inQueue(deque, i);
+        }
+        
+        for(int i = k - 1; i < nums.length; i++) {
+            inQueue(deque, i);
+            result.add(a[deque.peekFirst()]);
+            outQueue(deque, i - k + 1);
+        }
+        return result;
+
+    }
+}
 
 
 ```
 
+423 · Valid Parentheses
 
+```java
+
+public class Solution {
+    /**
+     * @param s A string
+     * @return whether the string is a valid parentheses
+     */
+    public boolean isValidParentheses(String s) {
+        // Write your code here
+
+        Map<Character, Character> map = new HashMap<>();
+        map.put(')', '(');
+        map.put('}', '{');
+        map.put(']', '[');
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+
+            char symbol = s.charAt(i);
+            
+            if (map.containsKey(symbol)) {
+                if (stack.isEmpty() || stack.pop() != map.get(symbol)) {
+                    return false;
+                }
+            } else {
+                stack.push(symbol);
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+
+```
+76 · Longest Increasing Subsequence
+```java
+public class Solution {
+    /**
+     * @param nums: The integer array
+     * @return: The length of LIS (longest increasing subsequence)
+     */
+    public int longestIncreasingSubsequence(int[] nums) {
+       
+        if (nums.length == 0) {
+            return 0;
+        }
+        int[] dp = new int[nums.length];
+        dp[0] = 1;
+        int maxresult = 1;
+
+        for (int i = 1; i < nums.length; i++) {
+            dp[i] = 1;
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            maxresult = Math.max(maxresult, dp[i]);
+        }
+        return maxresult;
+    }
+}
+
+
+```
+
+662 · Guess Number Higher or Lower
+
+```java
+
+/* The guess API is defined in the parent class GuessGame.
+   @param num, your guess
+   @return -1 if my number is lower, 1 if my number is higher, otherwise return 0
+      int guess(int num); */
+
+public class Solution extends GuessGame {
+    /**
+     * @param n an integer
+     * @return the number you guess
+     */
+    public int guessNumber(int n) {
+        // Write your code here
+        int i = 1, r = n;
+        while (i <= r) {
+            int mid = i + (r - i) / 2;
+            int result = guess(mid);
+            if (result == 0) {
+                return mid;
+            }
+            
+            if (result == -1) {
+                r = mid - 1;
+            } else {
+                i = mid + 1;
+            }
+        }
+        return -1;
+    }
+}
+
+```
+74 · First Bad Version
+
+```java
+
+/**
+ * public class GitRepo {
+ *     public static boolean isBadVersion(int k);
+ * }
+ * you can use GitRepo.isBadVersion(k) to judge whether 
+ * the kth code version is bad or not.
+*/
+class Solution {
+    /**
+     * @param n: An integers.
+     * @return: An integer which is the first bad version.
+     */
+    public int findFirstBadVersion(int n) {
+        int start = 1;
+        int end = n;
+        
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (SVNRepo.isBadVersion(mid)) {
+                end = mid;
+            } else {
+                start = mid;
+            }
+        }
+            
+        if (SVNRepo.isBadVersion(start)) {
+            return start;
+        }
+        return end;
+    }
+}
+
+```
+457 · Classical Binary Search
+```java
+
+public class Solution {
+    /**
+     * @param A an integer array sorted in ascending order
+     * @param target an integer
+     * @return an integer
+     */
+    public int findPosition(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        
+        int start = 0, end = nums.length - 1;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        
+        if (nums[start] == target) {
+            return start;
+        }
+        if (nums[end] == target) {
+            return end;
+        }
+        return -1;
+    }
+}
+
+```
+459 · Closest Number in Sorted Array
+
+```java
+
+public class Solution {
+    /**
+     * @param A an integer array sorted in ascending order
+     * @param target an integer
+     * @return an integer
+     */
+    public int closestNumber(int[] A, int target) {
+        if (A == null || A.length == 0) {
+            return -1;
+        }
+        
+        int index = firstIndex(A, target);
+        if (index == 0) {
+            return 0;
+        }
+        if (index == A.length) {
+            return A.length - 1;
+        }
+
+        if (target - A[index - 1] < A[index] - target) {
+            return index - 1;
+        }
+        return index;
+    }
+    
+    private int firstIndex(int[] A, int target) {
+        int start = 0, end = A.length - 1;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (A[mid] < target) {
+                start = mid;
+            } else if (A[mid] > target) {
+                end = mid;
+            } else {
+                end = mid;
+            }
+        }
+        
+        if (A[start] >= target) {
+            return start;
+        }
+        if (A[end] >= target) {
+            return end;
+        }
+        return A.length;
+    }
+}
+
+```
+458 · Last Position of Target
+```java
+
+public class Solution {
+    /*
+     * @param nums: An integer array sorted in ascending order
+     * @param target: An integer
+     * @return: An integer
+     */
+    public int lastPosition(int[] nums, int target) {
+        // write your code here
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int start = 0;
+        int end = nums.length - 1;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] == target) {
+                start = mid;
+            } else if (nums[mid] < target) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        if (nums[end] == target) {
+            return end;
+        } else if (nums[start] == target) {
+            return start;
+        } else {
+            return -1;
+        }
+    }
+}
+
+```
+61 · Search for a Range
+```java
+
+public class Solution {
+    /**
+     * @param A: an integer sorted array
+     * @param target: an integer to be inserted
+     * @return: a list of length 2, [index1, index2]
+     */
+
+    public static int findLastTargetNum(int[] A, int target, int n){
+        int left = 0;
+        int right = n - 1;
+        while (left + 1 < right){
+            int mid = left + (right - left) / 2;
+            if (A[mid] <= target){
+                left = mid;
+            }
+            else{
+                right = mid;
+            }
+        }
+        if (right >= 0 && A[right] == target){
+            return right;
+        }
+        if (left < n && A[left] == target){
+            return left;
+        }
+        return -1;
+    }
+    
+    public int[] searchRange(int[] A, int target) {
+        int n = A.length;
+        int[] interval = {-1, -1};
+        interval[0] = findFirstTargetNum(A, target, n);
+        interval[1] = findLastTargetNum(A, target, n);
+        return interval;
+    }
+}
+
+
+
+
+public class Solution {
+    /**
+     * @param A: an integer sorted array
+     * @param target: an integer to be inserted
+     * @return: a list of length 2, [index1, index2]
+     */
+
+    public static int findFirstTargetNum(int[] A, int target, int n){
+        int left = 0, right = n - 1;
+        while (left + 1 < right){
+            int mid = left + (right - left) / 2;
+            if (A[mid] < target){
+                left = mid;
+            }
+            else{
+                right = mid;
+            }
+        }
+        if (left < n && A[left] == target){
+            return left;
+        }
+        if (right >= 0 && A[right] == target){
+            return right;
+        }
+        return -1;
+    }
+}
+
+```
