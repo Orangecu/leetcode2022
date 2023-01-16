@@ -4260,3 +4260,207 @@ public class Solution {
 }
 
 ```
+
+28 · Search a 2D Matrix
+
+```java
+
+public class Solution {
+    /**
+     * @param matrix: matrix, a list of lists of integers
+     * @param target: An integer
+     * @return: a boolean, indicate whether matrix contains target
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+        // write your code here
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int start = 0;
+        int end = n * m - 1;
+
+        while (start + 1 < end) {
+            int mid = start + ( end - start) / 2;
+
+            if (get(matrix, mid) < target) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        if (get (matrix, start) == target) {
+            return true;
+        }
+        if (get (matrix, end) == target) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private int get (int[][] matrix, int index) {
+        int x = index / matrix[0].length;
+        int y = index % matrix[0].length;
+        return matrix[x][y];
+    }
+}
+```
+
+38 · Search a 2D Matrix II
+```java
+
+public class Solution {
+    /**
+     * @param matrix: A list of lists of integers
+     * @param: A number you want to search in the matrix
+     * @return: An integer indicate the occurrence of target in the given matrix
+     */
+    public int searchMatrix(int[][] matrix, int target) {
+        // write your code here
+        int r = matrix.length - 1;
+        int c = 0;
+        int result = 0;
+        while (r >= 0 && c < matrix[0].length) {
+            if (target == matrix[r][c]) {
+                result++;
+                r--;
+                c++;
+                continue;
+            }
+            if (target < matrix[r][c]) {
+                r--;
+            } else {
+                c++;
+            }
+        }
+        return result;
+    }
+}
+
+```
+
+61 · Search for a Range
+```java
+public class Solution {
+    /**
+     * @param A: an integer sorted array
+     * @param target: an integer to be inserted
+     * @return: a list of length 2, [index1, index2]
+     */
+
+    public static int findFirstTargetNum(int[] A, int target, int n){
+        int left = 0;
+        int right = n - 1;
+        while (left + 1 < right){
+            int mid = left + (right - left) / 2;
+            if (A[mid] < target){
+                left = mid;
+            }
+            else{
+                right = mid;
+            }
+        }
+        if (left < n && A[left] == target){
+            return left;
+        }
+        if (right >= 0 && A[right] == target){
+            return right;
+        }
+        return -1;
+    }
+}
+
+```
+458 · Last Position of Target
+
+```java
+public class Solution {
+    /*
+     * @param nums: An integer array sorted in ascending order
+     * @param target: An integer
+     * @return: An integer
+     */
+    public int lastPosition(int[] nums, int target) {
+        // write your code here
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int start = 0;
+        int end = nums.length - 1;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] == target) {
+                start = mid;
+            } else if (nums[mid] < target) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        if (nums[end] == target) {
+            return end;
+        } else if (nums[start] == target) {
+            return start;
+        } else {
+            return -1;
+        }
+    }
+}
+
+```
+
+459 · Closest Number in Sorted Array
+```java
+public class Solution {
+    /**
+     * @param A an integer array sorted in ascending order
+     * @param target an integer
+     * @return an integer
+     */
+    public int closestNumber(int[] A, int target) {
+        if (A == null || A.length == 0) {
+            return -1;
+        }
+        
+        int index = firstIndex(A, target);
+        if (index == 0) {
+            return 0;
+        }
+        if (index == A.length) {
+            return A.length - 1;
+        }
+
+        if (target - A[index - 1] < A[index] - target) {
+            return index - 1;
+        }
+        return index;
+    }
+    
+    private int firstIndex(int[] A, int target) {
+        int start = 0, end = A.length - 1;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (A[mid] < target) {
+                start = mid;
+            } else if (A[mid] > target) {
+                end = mid;
+            } else {
+                end = mid;
+            }
+        }
+        
+        if (A[start] >= target) {
+            return start;
+        }
+        if (A[end] >= target) {
+            return end;
+        }
+        return A.length;
+    }
+}
+
+```
+
+
+```java
+
+
+```
