@@ -1001,3 +1001,175 @@ public class Solution {
 }
 ```
 
+106 · Convert Sorted List to Binary Search Tree
+
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ *
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: The first node of linked list
+     * @return: a tree node
+     */
+    public TreeNode sortedListToBST(ListNode head) {
+        // write your code here
+        return treeBuilder(head, null);
+    }
+
+    public TreeNode treeBuilder(ListNode left, ListNode right ) {
+        if (left == right) {
+            return null;
+        }
+        ListNode mid = getMid(left, right);
+        TreeNode root = new TreeNode(mid.val);
+        root.left = treeBuilder(left, mid);
+        root.right = treeBuilder(mid.next, right);
+        return root;
+    }
+
+    public ListNode getMid(ListNode left, ListNode right) {
+        ListNode fast = left;
+        ListNode slow = left;
+
+        while (  fast != right && fast.next != right ) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+}
+
+```
+900 · Closest Binary Search Tree Value
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+class Solution {
+    public int closestValue(TreeNode root, double target) {
+
+        LinkedList<TreeNode> stack = new LinkedList();
+        long pred = Long.MIN_VALUE;
+
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                stack.add(root);
+                root = root.left;
+            }
+             
+            root = stack.removeLast();
+
+            if (pred <= target && target < root.val)
+                return Math.abs(pred - target) < Math.abs(root.val - target) ? (int)pred : root.val;
+
+            pred = root.val;
+            root = root.right;
+        }
+        return (int)pred;
+    }
+}
+
+```
+
+35 · Reverse Linked List
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: n
+     * @return: The new head of reversed linked list.
+     */
+    public ListNode reverse(ListNode head) {
+        // write your code here
+        if (head == null) {
+            return head;
+        }
+        ListNode current = head;
+        ListNode prev = null;
+        ListNode next = null;
+
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current; 
+            current = next;
+        }
+        return prev;
+    }
+
+}
+
+```
+539 · Move Zeroes
+```java
+public class Solution {
+    /**
+     * @param nums: an integer array
+     * @return: nothing
+     */
+    public void moveZeroes(int[] nums) {
+        // write your code here
+        int finder = 0;
+        int mover = 0;
+        while (finder < nums.length) {
+            if (nums[finder] != 0) {
+                if (mover != finder) {
+                    nums[mover] = nums[finder];
+                }
+                mover++;
+            }
+            finder++;
+        }
+        while (mover < nums.length) {
+            if (nums[mover] != 0) {
+                nums[mover] = 0;
+            }
+            mover++;
+        }
+    }
+}
+
+```
+
+
+

@@ -29,4 +29,21 @@ OOD 三要素
             leetcode2.java
 
             TreeNode.java
-    2.
+
+            class里的class （inner class）
+
+            不可变类
+                Immutabel 创建后状态不能修改 类似Final
+                    input arg 不能改变
+                    DB -> student class
+                    thread-safe
+            
+            Desigh class 之恩那个在里面定义static method（Unit method）
+            class UtilsClass {
+                  
+            }
+
+            
+
+    2. 多态 Polymorphism 
+        实现 Decision deferral
