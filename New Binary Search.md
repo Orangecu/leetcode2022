@@ -162,3 +162,104 @@ class Solution {
 }
 
 ```
+
+38 · Search a 2D Matrix II
+```java
+public class Solution {
+    /**
+     * @param matrix: A list of lists of integers
+     * @param: A number you want to search in the matrix
+     * @return: An integer indicate the occurrence of target in the given matrix
+     */
+    public int searchMatrix(int[][] matrix, int target) {
+        // write your code here
+        int r = matrix.length - 1;
+        int c = 0;
+        int ans = 0;
+        while (r >= 0 && c < matrix[0].length) {
+            if (target == matrix[r][c]) {
+                ans++;
+                r--;
+                c++;
+                continue;
+            }
+            if (target < matrix[r][c]) {
+                r--;
+            } else {
+                c++;
+            }
+        }
+        return ans;
+    }
+}
+
+```
+60 · Search Insert Position
+```java
+public class Solution {
+    /**
+     * @param a: an integer sorted array
+     * @param target: an integer to be inserted
+     * @return: An integer
+     */
+public int searchInsert(int[] A, int target) {
+        if (A == null || A.length == 0) {
+            return 0;
+        }
+        int start = 0;
+        int end = A.length - 1;
+        
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (A[mid] == target) {
+                return mid;
+            } else if (A[mid] < target) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        
+        if (A[start] >= target) {
+            return start;
+        } else if (A[end] >= target) {
+            return end;
+        } else {
+            return end + 1;
+        }
+    }
+}
+```
+74 · First Bad Version
+```java
+/**
+ * public class GitRepo {
+ *     public static boolean isBadVersion(int k);
+ * }
+ * you can use GitRepo.isBadVersion(k) to judge whether 
+ * the kth code version is bad or not.
+*/
+class Solution {
+    /**
+     * @param n: An integers.
+     * @return: An integer which is the first bad version.
+     */
+    public int findFirstBadVersion(int n) {
+        int start = 1, end = n;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (SVNRepo.isBadVersion(mid)) {
+                end = mid;
+            } else {
+                start = mid;
+            }
+        }
+            
+        if (SVNRepo.isBadVersion(start)) {
+            return start;
+        }
+        return end;
+    }
+}
+
+```
