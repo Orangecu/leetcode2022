@@ -263,3 +263,25 @@ class Solution {
 }
 
 ```
+196 . Missing Number
+```java
+public class Solution {
+    
+    public int findMissing(int[] nums) {
+        Set<Integer> set = new HashSet<Integer>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            set.add(nums[i]);
+        }
+        int missing = -1;
+        for (int i = 0; i <= n; i++) {
+            if (!set.contains(i)) {
+                missing = i;
+                break;
+            }
+        }
+        return missing;
+    }
+}
+
+```
