@@ -5,6 +5,10 @@ OOD vs System Design
 
 OOD 三要素      
     1.封装 Encapsulation
+        Providing onlu essential information to the 
+            outside world and hiding their background details.
+        Access Modifier: Public protected default private
+
         Visiblity ---- variable/method/class
         use Access Modifier
         control getIPAddress() <-- override 
@@ -38,7 +42,7 @@ OOD 三要素
                     DB -> student class
                     thread-safe
             
-            Desigh class 之恩那个在里面定义static method（Unit method）
+            Desigh class 那个在里面定义static method（Unit method）
             class UtilsClass {
                   
             }
@@ -47,3 +51,8 @@ OOD 三要素
 
     2. 多态 Polymorphism 
         实现 Decision deferral
+            Overwrite Dynamic building (run-time not compile time)
+            Static method can't be overridden. b/c there is only ONE instance for static class.
+        Override vs OverLoad
+            重写 VS 重载
+            
