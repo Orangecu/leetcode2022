@@ -290,3 +290,218 @@ public class Solution {
 }
 
 ```
+15 permutation
+```java
+public class Solution {
+    /**
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
+     *          we will sort your return value in output
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        // write your code here
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums == null) {
+            return result;
+        }
+        dfs(nums, new boolean[nums.length], new ArrayList<Integer>(), result);
+        return result;
+    }
+    public void dfs(int[] nums, boolean[] used, List<Integer> permute, List<List<Integer>> result) {
+        if (nums.length == permute.size()) {
+            result.add(new ArrayList<Integer>(permute));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]){
+            continue;
+            }
+        
+        permute.add(nums[i]);
+        used[i] = true;
+        dfs(nums, used, permute, result);
+        used[i] = false;
+        permute.remove(permute.size() - 1);
+        }
+        
+    }
+}
+```
+
+152 · Combinations
+```java
+public class Solution {
+    /**
+     * @param n: Given the range of numbers
+     * @param k: Given the numbers of combinations
+     * @return: All the combinations of k numbers out of 1..n
+     *          we will sort your return value in output
+     */
+    public List<List<Integer>> combine(int n, int k) {
+        // write your code here
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> solution = new ArrayList<>();
+        dfs(result, solution, n, k, 1);
+        return result;
+    }
+    private void dfs(List<List<Integer>> result, List<Integer> solution, int n, int k, int start) {
+        if (solution.size() == k) {
+            result.add(new ArrayList<Integer>(solution));
+            return;
+        }
+        for (int i = start; i <= n; i++) {
+            solution.add(i);
+            dfs(result, solution, n, k, i + 1);
+            solution.remove(solution.size() - 1);
+        }
+    }
+}
+
+```
+94 · Binary Tree Maximum Path Sum
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+class Solution {
+    int maxSum = Integer.MIN_VALUE;
+
+    public int maxPathSum(TreeNode root) {
+        maxGain(root);
+        return maxSum;
+    }
+
+    public int maxGain(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        int leftGain = Math.max(maxGain(node.left), 0);
+        int rightGain = Math.max(maxGain(node.right), 0);
+
+        int priceNewpath = node.val + leftGain + rightGain;
+        maxSum = Math.max(maxSum, priceNewpath);
+        return node.val + Math.max(leftGain, rightGain);
+    }
+}
+
+```
+95 · Validate Binary Search Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: True if the binary tree is BST, or false
+     */
+    public boolean isValidBST(TreeNode root) {
+        // write your code here
+        return divConq(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+    
+    private boolean divConq(TreeNode root, long min, long max){
+        if (root == null){
+            return true;
+        }
+        if (root.val <= min || root.val >= max){
+            return false;
+        }
+        return divConq(root.left, min, Math.min(max, root.val)) && 
+                divConq(root.right, Math.max(min, root.val), max);
+    }
+}
+```
+97 · Maximum Depth of Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer.
+     */
+    private int depth;
+    
+    public int maxDepth(TreeNode root) {
+        depth = 0;
+        helper(root, 1);
+        
+        return depth;
+    }
+    
+    private void helper(TreeNode node, int curtDepth) {
+        if (node == null) {
+            return;
+        }
+        
+        if (curtDepth > depth) {
+            depth = curtDepth;
+        }
+        
+        helper(node.left, curtDepth + 1);
+        helper(node.right, curtDepth + 1);
+    }
+}
+
+```
+175 · Invert Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: a TreeNode, the root of the binary tree
+     * @return: nothing
+     */
+    public void invertBinaryTree(TreeNode root) {
+        // write your code here
+        if(root == null) {
+            return;
+        }
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+
+        invertBinaryTree(root.left);
+        invertBinaryTree(root.right);
+         
+    }
+}
+```
