@@ -332,6 +332,63 @@ public class Solution {
 
 ```
 # DFS --------------------------------
+106 · Convert Sorted List to Binary Search Tree
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ *
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param head: The first node of linked list
+     * @return: a tree node
+     */
+    public TreeNode sortedListToBST(ListNode head) {
+        // write your code here
+        return buildTree(head, null);
+    }
+
+    public TreeNode buildTree(ListNode left, ListNode right) {
+        if (left == right) {
+            return null;
+        }
+        ListNode mid = getMedian(left, right);
+        TreeNode root = new TreeNode(mid.val);
+        root.left = buildTree(left, mid);
+        root.right = buildTree(mid.next, right);
+        return root;
+    }
+
+    public ListNode getMedian(ListNode left, ListNode right) {
+        ListNode fast = left;
+        ListNode slow = left;
+        while (fast != right && fast.next != right) {
+            fast = fast.next;
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+}
+
+```
 97 · Maximum Depth of Binary Tree   
 ```java
 /**
@@ -580,6 +637,181 @@ public class Solution {
 }
 
 ```
+
+31 · Partition Array
+
+```java
+public class Solution {
+    /** 
+     *@param nums: The integer array you should partition
+     *@param k: As description
+     *return: The index after partition
+     */
+    public int partitionArray(int[] nums, int k) {
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+            while (left <= right && nums[left] < k) {
+                left++;
+            }
+            while (left <= right && nums[right] >= k) {
+                right--;
+            }
+            if (left <= right) {
+                int temp = nums[left];
+                nums[left] = nums[right];
+                nums[right] = temp;
+                
+                left++;
+                right--;
+            }
+        }
+        return left;
+    }
+}
+
+```
+102 · Linked List Cycle
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return false;
+        }
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (slow != fast) {
+            if (fast == null || fast.next == null) {
+                return false;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return true;
+    }
+}
+
+```
+17 · Subsets
+```java
+public class Solution {
+    /**
+     * @param nums: A set of numbers
+     * @return: A list of lists
+     *          we will sort your return value in output
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        // write your code here
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> subset = new ArrayList<>();
+        Arrays.sort(nums);
+        helper(result, subset, nums, 0);
+        return result;
+    }
+    private void helper(
+        List<List<Integer>> result, 
+        List<Integer> subset,
+        int[] nums,
+        int startIndex
+    ) {
+        result.add(new ArrayList(subset));
+
+        for (int i = startIndex; i < nums.length; i++) {
+            subset.add(nums[i]);
+            helper(result, subset, nums, i + 1);
+            subset.remove(subset.size() - 1);
+        }
+    }
+}
+
+```
+\97 · Maximum Depth of Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer
+     */
+    public int maxDepth(TreeNode root) {
+        // write your code here
+        if (root == null) {
+            return 0;
+        }
+        int left = maxDepth(root.left);
+        int right = maxDepth(root.right);
+        return Math.max(left, right) + 1;
+    }
+}
+
+```
+94 · Binary Tree Maximum Path Sum
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer
+     */
+    private int maxSum = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        // write your code here
+        findMaxPath(root);
+        return maxSum;
+    }
+
+    public int findMaxPath(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftSum = Math.max(findMaxPath(root.left), 0);
+        int rightSum = Math.max(findMaxPath(root.right), 0);
+        int currentMax = root.val + leftSum + rightSum;
+
+        maxSum = Math.max(currentMax, maxSum);
+        return root.val + Math.max(leftSum, rightSum);
+    }
+}
+
+```
+
 # BFS -------------------------------------
 480 · Binary Tree Paths     
 ```java
@@ -727,6 +959,7 @@ public class Solution {
 
 ```
 
+
 # String ------------------------------
 157 · Unique Characters
 ``` java
@@ -808,6 +1041,46 @@ public class Solution {
 }
 ```
 # LinkList ----------------------
+102 · Linked List Cycle
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: The first node of linked list.
+     * @return: True if it has a cycle, or false
+     */
+    public boolean hasCycle(ListNode head) {
+        // write your code here
+        if (head == null || head.next == null) {
+            return false;
+        }
+        ListNode slow = head; 
+        ListNode fast = head.next;
+        while (slow != fast) {
+            if ( fast == null || fast.next == null) {
+                return false;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return true;
+    }
+}
+
+
+
+```
 35 · Reverse Linked List
 ```java
 /**
@@ -1126,8 +1399,78 @@ public class Solution {
     }
 }
 ```
+35 · Reverse Linked List
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
 
-# Binary Tree
+
+public class Solution {
+    /**
+     * @param head: n
+     * @return: The new head of reversed linked list.
+     */
+    public ListNode reverse(ListNode head) {
+        ListNode prev = null;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = prev; 
+            prev  = head; 
+            head = next;
+        }
+        return prev;
+    }
+}
+
+```
+112 · Remove Duplicates from Sorted List
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param head: head is the head of the linked list
+     * @return: head of linked list
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        // write your code here
+        if (head == null) {
+            return null;
+        }
+        ListNode node = head;
+        while (node.next != null) {
+            if (node.val == node.next.val) {
+                node.next = node.next.next;
+            } else {
+                node = node.next;
+            }
+        }
+        return head;
+    }
+}
+
+
+```
+# Binary Tree -------------------------------------
 66 · Binary Tree Preorder Traversal
 ```java
 
@@ -1529,6 +1872,52 @@ public class Solution {
             result.add("" + root.val);
         }
         return result;
+    }
+}
+
+```
+11 · Search Range in Binary Search Tree
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    private List<Integer> result;
+    /**
+     * @param root: param root: The root of the binary search tree
+     * @param k1: An integer
+     * @param k2: An integer
+     * @return: return: Return all keys that k1<=key<=k2 in ascending order
+     */
+    public List<Integer> searchRange(TreeNode root, int k1, int k2) {
+        // write your code here
+        result = new ArrayList<Integer>();
+        helper(root, k1, k2);
+        return result;
+    }
+    private void helper(TreeNode root, int k1, int k2) {
+        if (root == null) {
+            return;
+        }
+        if (root.val > k1) {
+            helper(root.left, k1, k2);
+        }
+        if (root.val >= k1 && root.val <= k2) {
+            result.add(root.val);
+        }
+        if (root.val < k2) {
+            helper(root.right, k1, k2);
+        }
     }
 }
 
