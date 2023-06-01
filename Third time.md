@@ -179,6 +179,85 @@ public class Solution {
 
 ```
 # Binary search --------------------
+1126 · Merge Two Binary Trees
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param t1: the root of the first tree
+     * @param t2: the root of the second tree
+     * @return: the new binary tree after merge
+     */
+    public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+        // Write your code here
+        if (t1 == null && t2 == null) {
+            return null;
+        }
+        if (t1 != null && t2 == null) {
+            return t1;
+        }
+        if (t1 == null && t2 != null) {
+            return t2;
+        }
+        TreeNode left = mergeTrees( t1.left, t2.left);
+        TreeNode right = mergeTrees( t1.right, t2.right);
+
+        TreeNode node = new TreeNode(t1.val + t2.val);
+        node.left = left;
+        node.right = right;
+
+        return node;
+    }
+}
+
+```
+
+155 · Minimum Depth of Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: The root of binary tree
+     * @return: An integer
+     */
+    public int minDepth(TreeNode root) {
+        // write your code here
+        if (root == null) {
+            return 0;
+        }
+        int leftDepth = minDepth(root.left);
+        int rightDepth = minDepth(root.right);
+        if (leftDepth == 0 || rightDepth == 0) {
+            return leftDepth + rightDepth + 1;
+        }
+        return Math.min(leftDepth , rightDepth) + 1;
+    }
+}
+
+```
+
 14 · First Position of Target
 ```java
 public class Solution {
@@ -332,6 +411,238 @@ public class Solution {
 
 ```
 # DFS --------------------------------
+480 · Binary Tree Paths
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root of the binary tree
+     * @return: all root-to-leaf paths
+     *          we will sort your return value in output
+     */
+    public List<String> binaryTreePaths(TreeNode root) {
+        // write your code here
+        List<String> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        List<String> leftPath = binaryTreePaths(root.left);
+        List<String> rightPath = binaryTreePaths(root.right);
+        for (String left : leftPath) {
+            result.add(root.val + "->" + left);
+        }
+        for (String right : rightPath) {
+            result.add(root.val + "->" + right);
+        }
+        if (result.size() == 0) {
+            result.add("" + root.val);
+        }
+        return result;
+    }
+}
+
+```
+
+242 · Convert Binary Tree to Linked Lists by Depth
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    /**
+     * @param root the root of binary tree
+     * @return a lists of linked list
+     */
+    public List<ListNode> binaryTreeToLists(TreeNode root) {
+        // Write your code here
+        List<ListNode> result = new ArrayList<ListNode>();
+        dfs(root, 1, result);
+        return result;
+    }
+
+    void dfs(TreeNode root, int depth, List<ListNode> result) {
+        if (root == null)
+            return;
+        ListNode node = new ListNode(root.val);
+
+
+
+        
+        if (result.size() < depth) {
+            result.add(node);
+        }
+        else {
+            node.next = result.get(depth-1);
+            result.set(depth-1, node);
+        }
+        dfs(root.right, depth + 1, result);
+        dfs(root.left, depth + 1, result);
+    }
+}
+
+```
+
+469 · Same Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isIdentical(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        } else if (p == null || q == null) {
+            return false;
+        } else if (p.val != q.val) {
+            return false;
+        } else {
+            return isIdentical(p.left, q.left) && isIdentical(p.right, q.right);
+        }
+    }
+}
+
+```
+
+97 · Maximum Depth of Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer
+     */
+    public int maxDepth(TreeNode root) {
+        // write your code here
+        if (root == null) {
+            return 0;
+        }
+        int left = maxDepth(root.left);
+        int right = maxDepth(root.right);
+        return Math.max(left, right) + 1;
+    }
+}
+
+
+
+
+
+```
+
+468 · Symmetric Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root of binary tree.
+     * @return: true if it is a mirror of itself, or false.
+     */
+    public boolean isSymmetric(TreeNode root) {
+        // write your code here
+        
+        return checker(root.left, root.right);
+    }
+    private boolean checker(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        }
+        if (left == null || right == null){
+            return false;
+        }
+        return left.val == right.val && checker(left.left, right.right) && checker(left.right, right.left);
+    }
+}
+
+```
+
+93 · Balanced Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+class Solution {
+
+    public boolean isBalanced(TreeNode root) {
+        return height(root) != -1;
+    }
+
+    public int height(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftHeight = height(root.left);
+        int rightHeight = height(root.right);
+        if (leftHeight == -1 || rightHeight == -1 || Math.abs(leftHeight - rightHeight) > 1) {
+            return -1;
+        } else {
+            return Math.max(leftHeight, rightHeight) + 1;
+        }
+    }
+}
+
+```
 106 · Convert Sorted List to Binary Search Tree
 ```java
 /**
@@ -1918,6 +2229,55 @@ public class Solution {
         if (root.val < k2) {
             helper(root.right, k1, k2);
         }
+    }
+}
+
+```
+# Array ------------------------------------------
+41 · Maximum Subarray
+```java
+public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return: A integer indicate the sum of max subarray
+     */
+    public int maxSubArray(int[] nums) {
+        int maxAns = Integer.MIN_VALUE, sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            maxAns = Math.max(maxAns, sum);
+            sum = Math.max(sum, 0);
+        }
+
+        return maxAns;
+    }
+}
+
+```
+# HashMap----------------------------------------------
+47 · Majority Element II
+```java
+public class Solution {
+    /**
+     * @param nums: a list of integers
+     * @return: The majority number that occurs more than 1/3
+     */
+    public int majorityNumber(List<Integer> nums) {
+        // write your code 
+        HashMap<Integer, Integer> count = new HashMap<>();
+        for (int i = 0; i < nums.size(); i++) {
+            if (count.containsKey(nums.get(i))) {
+                count.put(nums.get(i), count.get(nums.get(i)) + 1);
+            } else {
+                count.put(nums.get(i), 1);
+            }
+        }
+        for (int x : count.keySet()) {
+            if( count.get(x) > nums.size() / 3 ) {
+                return x;
+            }
+        }
+        return -1;
     }
 }
 
