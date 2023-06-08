@@ -55,4 +55,10 @@ OOD 三要素
             Static method can't be overridden. b/c there is only ONE instance for static class.
         Override vs OverLoad
             重写 VS 重载
-            
+                Overload : same function name, have different # of parameters or different types of parameters RETURN_TYPE cannot be counted.
+
+    3. 继承Inheritance
+        Concept: reuse variable and method in parent class
+        Inheritance and nulit inheritance: abstrace class vs interface
+        Class relationship: no relationShip
+        inheritance and composition
