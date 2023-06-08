@@ -411,13 +411,108 @@ public class Solution {
 
 ```
 # DFS --------------------------------
-480 · Binary Tree Paths
+245 · Subtree
 ```java
 /**
  * Definition of TreeNode:
  * public class TreeNode {
  *     public int val;
  *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param t1: The roots of binary tree T1.
+     * @param t2: The roots of binary tree T2.
+     * @return: True if T2 is a subtree of T1, or false.
+     */
+    public boolean isSubtree(TreeNode t1, TreeNode t2) {
+        // write your code here
+        if (t2 == null) {
+            return true;
+        }
+        if (t1 == null) {
+            return false;
+        }
+        if (isEqual(t1, t2)) {
+            return true;
+        }
+        if (isSubtree(t1.left, t2) || isSubtree(t1.right, t2)) {
+            return true;
+        }
+        return false;
+    }
+    public boolean isEqual(TreeNode t1, TreeNode t2) {
+        if (t1 == null && t2 == null) {
+            return t1 == t2;
+        }
+        if (t1.val != t2.val) {
+            return false;
+        }
+        return isEqual(t1.left, t2.left) && isEqual(t1.right, t2.right);
+    }
+}
+
+```
+689 · Two Sum IV - Input is a BST
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /*
+     * @param : the root of tree
+     * @param : the target sum
+     * @return: two numbers from tree which sum is n
+     */
+    public int[] twoSum(TreeNode root, int n) {
+        // write your code here
+        if (root == null) {
+            return null;
+        }
+        Set<Integer> used = new HashSet<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+
+        while( !queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (used.contains(n - node.val)) {
+                return new int[]{node.val, n - node.val};
+            }
+            used.add(node.val);
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+        return null;
+    }
+}
+
+```
+480 · Binary Tree Paths
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, ;
  *     public TreeNode(int val) {
  *         this.val = val;
  *         this.left = this.right = null;
@@ -1782,6 +1877,46 @@ public class Solution {
 
 ```
 # Binary Tree -------------------------------------
+902 · Kth Smallest Element in a BST
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the given BST
+     * @param k: the given k
+     * @return: the kth smallest element in BST
+     */
+    public int kthSmallest(TreeNode root, int k) {
+        // write your code here
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            k--;
+            if (k == 0) {
+                break;
+            }
+            root = root.right;
+        }
+        return root.val;
+    }
+}
+
+```
 66 · Binary Tree Preorder Traversal
 ```java
 
@@ -2281,4 +2416,38 @@ public class Solution {
     }
 }
 
+```
+# sort -------------------------------------------------
+148 · Sort Colors
+```java
+public class Solution {
+    /**
+     * @param nums: A list of integer which is 0, 1 or 2
+     * @return: nothing
+     */
+    public void sortColors(int[] nums) {
+        // write your code here
+        int left = 0;
+        int right = nums.length - 1;
+        int mid = 0;
+
+        while (mid <= right) {
+            if (nums[mid] == 0) {
+                swap(nums, mid, left);
+                mid++;
+                left++;
+            } else if (nums[mid] == 2) {
+                swap(nums, mid, right);
+                right--;
+            } else {
+                mid++;
+            }
+        }
+    }
+    private void swap(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+}
 ```
