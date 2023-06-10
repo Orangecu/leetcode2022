@@ -180,6 +180,79 @@ public class Solution {
 
 ```
 # Binary search --------------------
+3481 · Find the Index of the Maximum Value
+```java
+public class Solution {
+    /**
+     * @param arr: array
+     * @param helper: You can using compare function by `helper.compare(int, int, int, int)`
+     * @return: max element index
+     */
+    public int getMaxElementIndex(List<Integer> arr, Helper helper) {
+        int start = 0；
+        int end = arr.size() - 1;
+        while (start != end) {
+            int m1 = (start + end) / 2;
+            int m2 = (start + end + 1) / 2;
+            if (helper.compare(start, m1, m2, end) == 1) {
+                end = m1;
+            } else {
+                start = m2;
+            }
+        }
+        return start;
+    }
+}
+
+```
+88 · Lowest Common Ancestor of a Binary Tree
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+
+class Solution {
+    
+    Map<Integer, TreeNode> map = new HashMap<>();
+    Set<Integer> used = new HashSet<>();
+    
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode A, TreeNode B) {
+        dfs(root);
+        while (A != null) {
+            used.add(A.val);
+            A = map.get(A.val);
+        }
+        while (B != null) {
+            if (used.contains(B.val)) {
+                return B;
+            }
+            B = map.get(B.val);
+        }
+        return null;
+    }
+    
+    public void dfs(TreeNode root) {
+        if (root.left != null) {
+            map.put(root.left.val, root);
+            dfs(root.left);
+        }
+        if (root.right != null) {
+            map.put(root.right.val, root);
+            dfs(root.right);
+        }
+    }
+
+}
+```
 1126 · Merge Two Binary Trees
 ```java
 /**
@@ -2391,6 +2464,33 @@ public class Solution {
 
 ```
 # HashMap----------------------------------------------
+1905 · Character deletion
+```java
+public class Solution {
+    /**
+     * @param str: The first string given
+     * @param sub: The given second string
+     * @return: Returns the deleted string
+     */
+    public String characterDeletion(String str, String sub) {
+        // write your code here
+        int[] temp = new int[256];
+        StringBuilder result = new StringBuilder("");
+
+        for (int i = 0; i < sub.length(); i++) {
+            temp[sub.charAt(i)]++;
+        }
+
+        for (int i = 0; i < str.length(); i++) {
+            if (temp[str.charAt(i)] == 0) {
+                result.append(Character.toString(str.charAt(i)));
+            }
+        }
+        return result.toString();
+    }
+}
+
+```
 47 · Majority Element II
 ```java
 public class Solution {
@@ -2634,6 +2734,54 @@ public class Solution {
 
 ```
 # Binary search --------------------
+183 · Wood Cut
+```java
+public class Solution {
+    /**
+     * @param L: Given n pieces of wood with length L[i]
+     * @param k: An integer
+     * @return: The maximum length of the small pieces
+     */
+    public int woodCut(int[] L, int k) {
+        int length = L.length;
+        if (length == 0) {
+            return 0;
+        }
+        int max = 0;
+        for (int i = 0;i < length;i++) {
+            max = Math.max(max,L[i]);
+        }
+        int left = 0;
+        int right = max;
+  
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if (check(L, k, length, mid)) {
+                left = mid;
+            }
+            else {
+                right = mid;
+            }
+        }
+        if (check (L, k, length, right)){
+            return right;
+        }
+        return left;
+    }
+    private boolean check(int [] L,int k,int length,int mid){
+        int count = 0;
+        for (int i = 0; i < length; i++) {
+            count += L[i] / mid;
+        }
+        if (count >= k) {
+            return true;
+        }
+        return false;
+    }
+}
+
+```
+
 1126 · Merge Two Binary Trees
 ```java
 /**
@@ -4844,7 +4992,79 @@ public class Solution {
 }
 
 ```
-# HashMap----------------------------------------------
+# Hash----------------------------------------------
+47 · Majority Element II
+```java
+public class Solution {
+    /**
+     * @param nums: a list of integers
+     * @return: The majority number that occurs more than 1/3
+     */
+    public int majorityNumber(List<Integer> nums) {
+        // write your code here
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int x : nums) {
+            if (map.containsKey(x)) {
+                map.put(x, map.get(x) + 1);
+
+            } else {
+                map.put(x, 1);
+            }
+        }
+
+        // Set keySet = map.keySet();
+        // int length = keySet.length()
+        // for (int i = 0: i < length; i++) {
+        //     map.get(keySet[i])
+        // }
+        for (int x : map.keySet()) {
+            if (map.get(x) > nums.size() / 3) {
+                return x;
+            }
+        }
+        return -1;
+    }
+}
+
+
+```
+124 · Longest Consecutive Sequence
+```java
+public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return an integer
+     */
+    public int longestConsecutive(int[] num) {
+        // write you code here
+        Set<Integer> set = new HashSet<>();
+        for (int item : num) {
+            set.add(item);
+        }
+
+        int ans = 0;
+        for (int item : num) {
+            if (set.contains(item)) {
+                set.remove(item);
+
+                int l = item - 1;
+                int r = item + 1;
+                while (set.contains(l)) {
+                    set.remove(l);
+                    l--;
+                }
+                while (set.contains(r)) {
+                    set.remove(r);
+                    r++;
+                }
+                ans = Math.max(ans, r - l - 1);
+            }
+        }
+        return ans;
+    }
+}
+
+```
 47 · Majority Element II
 ```java
 public class Solution {
@@ -4873,6 +5093,25 @@ public class Solution {
 
 ```
 # sort -------------------------------------------------
+920 · Meeting Rooms
+```java
+public class Solution {
+    public boolean canAttendMeetings(List<Interval> intervals) {
+        Collections.sort(intervals, new Comparator<Interval>() {
+            public int compare(Interval i1, Interval i2) {
+                return i1.start - i2.start;
+            }
+        });
+
+        for (int i = 0; i < intervals.size() - 1; i++) {
+        if (intervals.get(i).end > intervals.get(i+1).start)
+            return false;
+        }
+        return true;
+    }
+}
+
+```
 148 · Sort Colors
 ```java
 public class Solution {
