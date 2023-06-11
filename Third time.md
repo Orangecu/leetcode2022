@@ -1,5 +1,41 @@
 <<<<<<< HEAD
 # Two pointers----------------------
+31 · Partition Array
+```java
+public class Solution {
+    /** 
+     *@param nums: The integer array you should partition
+     *@param k: As description
+     *return: The index after partition
+     */
+    public int partitionArray(int[] nums, int k) {
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+            while (left <= right && nums[left] < k) {
+                left++;
+            }
+            while (left <= right && nums[right] >= k) {
+                right--;
+            }
+            if (left <= right) {
+                int temp = nums[left];
+                nums[left] = nums[right];
+                nums[right] = temp;
+                
+                left++;
+                right--;
+            }
+        }
+        return left;
+    }
+}
+
+```
 6 · Merge Two Sorted Arrays
 ```java
 public class Solution {
@@ -2464,6 +2500,43 @@ public class Solution {
 
 ```
 # HashMap----------------------------------------------
+124 · Longest Consecutive Sequence
+```java
+public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return an integer
+     */
+    public int longestConsecutive(int[] num) {
+        // write you code here
+        Set<Integer> set = new HashSet<>();
+        for (int item : num) {
+            set.add(item);
+        }
+
+        int ans = 0;
+        for (int item : num) {
+            if (set.contains(item)) {
+                set.remove(item);
+
+                int l = item - 1;
+                int r = item + 1;
+                while (set.contains(l)) {
+                    set.remove(l);
+                    l--;
+                }
+                while (set.contains(r)) {
+                    set.remove(r);
+                    r++;
+                }
+                ans = Math.max(ans, r - l - 1);
+            }
+        }
+        return ans;
+    }
+}
+
+```
 1905 · Character deletion
 ```java
 public class Solution {
@@ -4993,6 +5066,54 @@ public class Solution {
 
 ```
 # Hash----------------------------------------------
+57 · 3Sum
+```java
+public class Solution {
+    /**
+    * @param numbers : Give an array numbers of n integer
+    * @return : Find all unique triplets in the array which gives the sum of zero.
+    */
+    public List<List<Integer>> threeSum(int[] numbers) {
+        Arrays.sort(numbers);
+        
+        List<List<Integer>> results = new ArrayList();
+        for (int i = 0; i < numbers.length; i++) {
+            if (i != 0 && numbers[i] == numbers[i - 1]) {
+               continue;
+            }
+            findTwoSum(numbers, i, results);
+        }
+        
+        return results;
+    }
+    
+    private void findTwoSum(int[] nums, int index, List<List<Integer>> results) {
+        int left = index + 1, right = nums.length - 1;
+        int target = -nums[index];
+        
+        while (left < right) {
+            int twoSum = nums[left] + nums[right];
+            if (twoSum < target) {
+                left++;
+            } else if (twoSum > target) {
+                right--;
+            } else {
+                List<Integer> triple = new ArrayList();
+                triple.add(nums[index]);
+                triple.add(nums[left]);
+                triple.add(nums[right]);
+                results.add(triple);
+                left++;
+                right--;
+                while (left < right && nums[left] == nums[left - 1]) {
+                    left++;
+                }
+            }
+        }
+    }
+}
+
+```
 47 · Majority Element II
 ```java
 public class Solution {
@@ -5145,4 +5266,34 @@ public class Solution {
     }
 }
 ```
->>>>>>> 770fc5de024f3c6f7109722e166ec00fc727bc8c
+# priority queue
+```java
+public class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int max = 0;
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+            max = Math.max(max, map.get(num));
+        }
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> map.get(a) - map.get(b));
+        for (int num : map.keySet()) {
+            pq.offer(num);
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+        
+        List<Integer> result = new ArrayList<>();
+        while (!pq.isEmpty()) {
+            result.add(pq.poll());
+        }
+        
+        Collections.sort(result);
+        return result;
+    }
+}
+
+
+```

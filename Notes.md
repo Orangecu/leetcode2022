@@ -343,10 +343,50 @@ Microservice of Data pipline system
 
             Client <-- end connection --> Server
 
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 
+### TCP -three way HandShake (need response to build connection) 200ms
+Slow but reliable transfers   
+Email, web browsing
 
+    Sender                          Receiver
+    Send SYN ---------------------> Receive SYN
+    Receive ACT <------------------ Return SYN ACK
+    Send Application Data --------> Receive Data
 
+### UDP  (Just send anything, no need to check) 100ms
+Fast but Non guaranteed transfers
+VoIP
+Music Streaming
+
+    Sender                          Receiver
+    Receive Request <-------------- Send Request
+    Respond ----------------------> Receive Respond
+    Respond ----------------------> Receive Respond
+    Respond ----------------------> Receive Respond
+
+### TCP- 4 Wat HandShake (Same from 3 way but with end) 
+
+### UDP-QUIC 0ms
+
+    Sender                          Receiver
+    Send -------------------------> Receive
+
+## Project connections    
+    
+    Client -> Media service
+            -> New service 
+             -> Analytic service -> Notification service
+
+### Network connection - Layers
+
+    Network Connections View
+     Host A -> Router -> Router -> Host B
+
+     TCP/IP Model
+     Application -> transport -> Network -> Network Access and return
 
 
 
